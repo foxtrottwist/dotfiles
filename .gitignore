@@ -1,0 +1,4 @@
+.DS_Store
+.elixir_ls/
+node_modules/
+*.log
