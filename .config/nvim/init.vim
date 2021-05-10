@@ -11,6 +11,7 @@ let g:coc_global_extensions = [
   \ 'coc-css',
   \ 'coc-html',
   \ 'coc-json',  
+  \ 'coc-pairs',
   \ 'coc-prettier',
   \ 'coc-tsserver',
   \ 'coc-yaml'
@@ -71,13 +72,87 @@ set cursorline
 " Setup code folding
 set foldmethod=indent
 set foldlevel=99
+set foldcolumn=1
 
 " Set editor defaults
 set mouse=a
 set number
+set numberwidth=5
 
-" map leader to comma
+" Open new split panes to right and below
+set splitright
+set splitbelow
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases 
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch 
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+
+" For regular expressions turn magic on
+set magic
+
+" Use spaces instead of tabs
+set expandtab
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 2 spaces
+set shiftwidth=2
+set tabstop=2
+
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+set ai " Auto indent
+set si " Smart indent
+set wrap " Wrap lines
+
+" Map leader to comma
 let mapleader = "," 
+
+" Map Esc to tn
+inoremap tn <Esc> 
+
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove 
+map <leader>t<leader> :tabnext 
+
+" Let 'tl' toggle between this and the last accessed tab
+let g:lasttab = 1
+nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
+" Turn terminal to normal mode with escape
+tnoremap tn <C-\><C-n>
+
+" Start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+
+function! OpenTerminal()
+  split term://zsh
+  resize 20
+endfunction
+
+nnoremap <C-j> :call OpenTerminal()<CR>
 
 "
 " NERDTree preferences
@@ -138,9 +213,6 @@ nmap <leader>L <plug>(easymotion-overwin-line)
 map  <leader>w <plug>(easymotion-bd-w)
 nmap <leader>w <plug>(easymotion-overwin-w)
 
-" open new split panes to right and below
-set splitright
-set splitbelow
 
 " Airline preferences
 " ---------------------
@@ -149,25 +221,27 @@ let g:rigel_airline = 1
 let g:airline_theme = 'rigel'
 let g:airline_powerline_fonts = 1
 
-
 " Elixir preferences
 let g:mix_format_on_save = 1
-
-" turn terminal to normal mode with escape
-tnoremap <Esc> <C-\><C-n>
 
 " Keep syntax highlighting in sync in larger React files
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
+" common editor actions
+nmap <leader>rn <plug>(coc-rename)
+
+" Fix autofix problem of current line
+nmap <leader>qf <plug>(coc-fix-current)
+
 " Show documentation
+nnoremap <silent> H :call <sid>show_documentation()<cr>
+
 function! s:show_documentation()
   if (CocHasProvider('hover'))
     call CocAction('doHover')
   endif
 endfunction
-
-nnoremap <silent> H :call <sid>show_documentation()<cr>
 
 " Show diagnostics, otherwise documentation, on hold
 " function! ShowDocIfNoDiagnostic(timer_id)
@@ -185,9 +259,30 @@ nnoremap <silent> H :call <sid>show_documentation()<cr>
 " autocmd CursorHoldI * :call <sid>show_hover_doc()
 " autocmd CursorHold * :call <sid>show_hover_doc()
 
-" common editor actions
-nmap <leader>rn <plug>(coc-rename)
 
-" Fix autofix problem of current line
-nmap <leader>qf <plug>(coc-fix-current)
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+" vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+" vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+" function! CmdLine(str)
+"     call feedkeys(":" . a:str)
+" endfunction 
+
+" function! VisualSelection(direction, extra_filter) range
+"     let l:saved_reg = @"
+"     execute "normal! vgvy"
+
+"     let l:pattern = escape(@", "\\/.*'$^~[]")
+"     let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+"     if a:direction == 'gv'
+"         call CmdLine("Ack '" . l:pattern . "' " )
+"     elseif a:direction == 'replace'
+"         call CmdLine("%s" . '/'. l:pattern . '/')
+"     endif
+
+"     let @/ = l:pattern
+"     let @" = l:saved_reg
+" endfunction
 
