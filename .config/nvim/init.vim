@@ -1,5 +1,8 @@
 call plug#begin('~/.vim/plugged')
 
+" Theming
+Plug 'Rigellute/rigel'
+
 " Language Client
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -16,9 +19,6 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-yaml'
   \ ]
-
-" Theming
-Plug 'Rigellute/rigel'
 
 " Language support ~ Ruby
 Plug 'vim-ruby/vim-ruby'
@@ -53,9 +53,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" Display Git diff in the sign column
 Plug 'airblade/vim-gitgutter'
-Plug 'easymotion/vim-easymotion'
 
+" Distraction-free writing mode
 Plug 'junegunn/goyo.vim'
 
 call plug#end()
@@ -154,6 +155,35 @@ endfunction
 
 nnoremap <C-j> :call OpenTerminal()<CR>
 
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+function! CmdLine(str)
+    call feedkeys(":" . a:str)
+endfunction 
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+" Press Space to turn off highlighting and clear any message already displayed.
+:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+
 "
 " NERDTree preferences
 " ---------------------
@@ -185,39 +215,10 @@ let g:fzf_action = {
   \ 'ctrl-v': 'vsplit'
   \}
 
-"
-" Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
-
-function! CmdLine(str)
-    call feedkeys(":" . a:str)
-endfunction 
-
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
-endfunction
-
-" Press Space to turn off highlighting and clear any message already displayed.
-:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
-
 " For ignoring gitignore files requires silversearcher-ag 
 " https://github.com/ggreer/the_silver_searcher
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+
 
 "
 " Goyo preferences
@@ -226,26 +227,6 @@ let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 nnoremap <silent> <C-k> :Goyo<CR>
 
 let g:goyo_width = 150
-
-"
-" Easymotion preferences
-" ---------------------
-"
-autocmd User EasyMotionPromptBegin CocDisable
-autocmd User EasyMotionPromptEnd CocEnable
-
-" <Leader>n{char} to move to {char}
-map  <leader>n <plug>(easymotion-bd-f)
-nmap <leader>n <plug>(easymotion-overwin-f)
-
-" Move to line
-map <leader>L <plug>(easymotion-bd-jk)
-nmap <leader>L <plug>(easymotion-overwin-line)
-
-" Move to word
-map  <leader>w <plug>(easymotion-bd-w)
-nmap <leader>w <plug>(easymotion-overwin-w)
-
 
 " Airline preferences
 " ---------------------
