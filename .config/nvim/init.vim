@@ -56,6 +56,9 @@ Plug 'vim-airline/vim-airline-themes'
 " Display Git diff in the sign column
 Plug 'airblade/vim-gitgutter'
 
+" Manage and restore sessions
+Plug 'rmagatti/auto-session'
+
 " Distraction-free writing mode
 Plug 'junegunn/goyo.vim'
 
@@ -75,10 +78,13 @@ set foldmethod=indent
 set foldlevel=99
 set foldcolumn=1
 
-" Set editor defaults
+" A little mourse never hurt anyone
 set mouse=a
+
+" Display relative line numbers, with absolute line number for current line
 set number
 set numberwidth=5
+set relativenumber
 
 " Open new split panes to right and below
 set splitright
@@ -124,8 +130,24 @@ set ai " Auto indent
 set si " Smart indent
 set wrap " Wrap lines
 
+" Sets how many lines of history VIM has to remember
+set history=500
+
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
+
+" Set to auto read when a file is changed from the outside
+set autoread
+au FocusGained,BufEnter * checktime
+
 " Map leader to comma
 let mapleader = "," 
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+
 
 " Map Esc to tn
 inoremap tn <Esc> 
@@ -134,8 +156,8 @@ inoremap tn <Esc>
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
+map <leader>tm :tabmove<cr>
+map <leader>t<leader> :tabnext<cr> 
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -143,7 +165,7 @@ nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
 " Turn terminal to normal mode with escape
-tnoremap tn <C-\><C-n>
+tnoremap jj <C-\><C-n>
 
 " Start terminal in insert mode
 au BufEnter * if &buftype == 'terminal' | :startinsert | endif
@@ -242,7 +264,7 @@ let g:mix_format_on_save = 1
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
-" common editor actions
+" Common editor actions
 nmap <leader>rn <plug>(coc-rename)
 
 " Fix autofix problem of current line
