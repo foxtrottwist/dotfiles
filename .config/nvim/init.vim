@@ -50,15 +50,16 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
+" Manage and restore sessions
+Plug 'rmagatti/auto-session'
+Plug 'rmagatti/session-lens' " Requires 'nvim-telescope/telescope.nvim' and it's dependencies
+
 " Status bar
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " Display Git diff in the sign column
 Plug 'airblade/vim-gitgutter'
-
-" Manage and restore sessions
-Plug 'rmagatti/auto-session'
 
 " Distraction-free writing mode
 Plug 'junegunn/goyo.vim'
