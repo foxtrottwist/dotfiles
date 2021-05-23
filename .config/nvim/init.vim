@@ -42,8 +42,8 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ['jav
 Plug 'jparise/vim-graphql'
 
 " File Explorer with Icons
-Plug 'scrooloose/nerdtree'
-Plug 'ryanoasis/vim-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'kyazdani42/nvim-web-devicons'
 
 " File search
 Plug 'nvim-lua/popup.nvim'
@@ -61,18 +61,24 @@ Plug 'vim-airline/vim-airline-themes'
 " Display Git diff in the sign column
 Plug 'airblade/vim-gitgutter'
 
-" Commenting commands
+" Commenting
 Plug 'tpope/vim-commentary'
 
 " Distraction-free writing mode
 Plug 'junegunn/goyo.vim'
 
+" Snazzy tabs
+Plug 'akinsho/nvim-bufferline.lua'
+
+" Easy file navigation
+Plug 'phaazon/hop.nvim'
+
 call plug#end()
 
-"""" enable 24bit true color
+" Enable 24bit true color
 set termguicolors
 
-"""" enable the theme
+" Enable the theme
 syntax enable
 colorscheme rigel
 set noshowmode
@@ -99,29 +105,14 @@ set splitbelow
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
-" Ignore case when searching
-set ignorecase
-
-" When searching try to be smart about cases 
-set smartcase
-
-" Highlight search results
-set hlsearch
-
-" Makes search act like search in modern browsers
-set incsearch 
-
-" Don't redraw while executing macros (good performance config)
-set lazyredraw 
-
-" For regular expressions turn magic on
-set magic
-
-" Use spaces instead of tabs
-set expandtab
-
-" Be smart when using tabs ;)
-set smarttab
+set ignorecase " Ignore case when searching
+set smartcase " When searching try to be smart about cases 
+set hlsearch  " Highlight search results
+set incsearch " Makes search act like search in modern browsers
+set lazyredraw " Don't redraw while executing macros (good performance config)
+set magic " For regular expressions turn magic on
+set expandtab " Use spaces instead of tabs
+set smarttab " Be smart when using tabs ;)
 
 " 1 tab == 2 spaces
 set shiftwidth=2
@@ -135,8 +126,7 @@ set ai " Auto indent
 set si " Smart indent
 set wrap " Wrap lines
 
-" Sets how many lines of history VIM has to remember
-set history=500
+set history=500 " Sets how many lines of history VIM has to remember
 
 " Enable filetype plugins
 filetype plugin on
@@ -182,7 +172,7 @@ function! OpenTerminal()
   resize 20
 endfunction
 
-nnoremap <C-j> :call OpenTerminal()<CR>
+nnoremap <silent> <C-j> :call OpenTerminal()<CR>
 
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
@@ -214,24 +204,10 @@ endfunction
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 "
-" NERDTree preferences
+" Bufferline preferences
 " ---------------------
 "
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeIgnore = []
-let g:NERDTreeStatusline = ''
-
-" Automaticaly close nvim if NERDTree is only thing left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" Toggle NerdTree
-nnoremap <silent> <C-b> :NERDTreeToggle<CR>
-
-" This supposedly hides the brackets in NERDTree
-if exists('g:loaded_webdevicons')
-    call webdevicons#refresh()
-endif
+lua require("bufferline").setup{}
 
 "
 " Telescope preferences
@@ -293,6 +269,16 @@ require('telescope').setup{
   }
 }
 EOF
+
+"
+" Hop preferences
+" ---------------------
+"
+map s :HopWord<CR>
+map <Leader>p :HopPattern<CR>
+nmap <Leader>s :HopChar1<CR>
+nmap <Leader>ss :HopChar2<CR>
+map <Leader>l :HopLine<CR>
 
 "
 " Goyo preferences
