@@ -274,11 +274,11 @@ EOF
 " Hop preferences
 " ---------------------
 "
-map s :HopWord<CR>
-map <Leader>p :HopPattern<CR>
-nmap <Leader>s :HopChar1<CR>
-nmap <Leader>ss :HopChar2<CR>
-map <Leader>l :HopLine<CR>
+map <silent> s :HopWord<CR>
+map <silent> <Leader>p :HopPattern<CR>
+nmap <silent> <Leader>s :HopChar1<CR>
+nmap <silent> <Leader>ss :HopChar2<CR>
+map <silent> <Leader>l :HopLine<CR>
 
 "
 " Goyo preferences
