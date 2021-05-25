@@ -6,20 +6,6 @@ Plug 'Rigellute/rigel'
 " Language Client
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" coc extensions
-let g:coc_global_extensions = [
-  \ 'coc-elixir',
-  \ 'coc-emmet',
-  \ 'coc-eslint',
-  \ 'coc-css',
-  \ 'coc-html',
-  \ 'coc-json',  
-  \ 'coc-pairs',
-  \ 'coc-prettier',
-  \ 'coc-tsserver',
-  \ 'coc-yaml'
-  \ ]
-
 " Language support ~ Ruby
 Plug 'vim-ruby/vim-ruby'
 
@@ -72,6 +58,8 @@ Plug 'akinsho/nvim-bufferline.lua'
 
 " Easy file navigation
 Plug 'phaazon/hop.nvim'
+
+Plug 'akinsho/nvim-toggleterm.lua'
 
 call plug#end()
 
@@ -127,6 +115,7 @@ set si " Smart indent
 set wrap " Wrap lines
 
 set history=500 " Sets how many lines of history VIM has to remember
+set hidden
 
 " Enable filetype plugins
 filetype plugin on
@@ -136,15 +125,11 @@ filetype indent on
 set autoread
 au FocusGained,BufEnter * checktime
 
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
+" Map leader to comma
+let mapleader = "," 
 
 " Fast saving
 nmap <leader>w :w!<cr>
-
-" Map leader to comma
-let mapleader = "," 
 
 " Map Esc to tn
 inoremap tn <Esc> 
@@ -158,21 +143,19 @@ map <leader>t<leader> :tabnext<cr>
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+nmap <Leader>pp :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
 " Turn terminal to normal mode with escape
 tnoremap tn <C-\><C-n>
 
-" Start terminal in insert mode
-au BufEnter * if &buftype == 'terminal' | :startinsert | endif
-
-function! OpenTerminal()
-  split term://zsh
-  resize 20
-endfunction
-
-nnoremap <silent> <C-j> :call OpenTerminal()<CR>
+" Moving lines
+nnoremap <A-Down> :m .+1<CR>==
+nnoremap <A-Up> :m .-2<CR>==
+inoremap <A-Down> <Esc>:m .+1<CR>==gi
+inoremap <A-Up> <Esc>:m .-2<CR>==gi
+vnoremap <A-Down> :m '>+1<CR>gv=gv
+vnoremap <A-Up> :m '<-2<CR>gv=gv
 
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
@@ -210,6 +193,24 @@ endfunction
 lua require("bufferline").setup{}
 
 "
+" Toggleterm preferences
+" ---------------------
+"
+
+lua << EOF
+require('toggleterm').setup {
+    size = 20,
+    open_mapping = [[<C-j>]],
+    shade_filetypes = {},
+    shade_terminals = true,
+    shading_factor = '1',
+    start_in_insert = true,
+    persist_size = true,
+    direction = 'horizontal'
+}
+EOF
+
+"
 " Telescope preferences
 " ---------------------
 "
@@ -231,8 +232,8 @@ require('telescope').setup{
       '--smart-case'
     },
     prompt_position = "bottom",
-    prompt_prefix = "> ",
-    selection_caret = "> ",
+    prompt_prefix = " ",
+    selection_caret = " ",
     entry_prefix = "  ",
     initial_mode = "insert",
     selection_strategy = "reset",
@@ -305,26 +306,38 @@ autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 
 "
-" Common editor actions
+" COC Preferences
 " ---------------------
 "
 
-" Moving lines
-nnoremap <A-Down> :m .+1<CR>==
-nnoremap <A-Up> :m .-2<CR>==
-inoremap <A-Down> <Esc>:m .+1<CR>==gi
-inoremap <A-Up> <Esc>:m .-2<CR>==gi
-vnoremap <A-Down> :m '>+1<CR>gv=gv
-vnoremap <A-Up> :m '<-2<CR>gv=gv
+" coc extensions
+let g:coc_global_extensions = [
+  \ 'coc-elixir',
+  \ 'coc-emmet',
+  \ 'coc-eslint',
+  \ 'coc-css',
+  \ 'coc-html',
+  \ 'coc-json',  
+  \ 'coc-pairs',
+  \ 'coc-prettier',
+  \ 'coc-tsserver',
+  \ 'coc-yaml'
+  \ ]
 
 " Comment out line(s)
 nnoremap <leader>c :Commentary<CR> 
 
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
 " Rename Symbol
-nmap <leader>rn <plug>(coc-rename)
+nmap <leader>rn <Plug>(coc-rename)
 
 " Fix autofix problem of current line
-nmap <leader>qf <plug>(coc-fix-current)
+nmap <leader>qf <Plug>(coc-fix-current)
 
 " Show documentation
 nnoremap <silent> H :call <sid>show_documentation()<cr>
