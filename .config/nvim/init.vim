@@ -1,67 +1,4 @@
-call plug#begin('~/.vim/plugged')
-
-" Theming
-Plug 'Rigellute/rigel'
-
-" Language Client
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" Language support ~ Ruby
-Plug 'vim-ruby/vim-ruby'
-
-" Language support ~ Elixir
-Plug 'elixir-editors/vim-elixir'
-Plug 'slashmili/alchemist.vim'
-Plug 'mhinz/vim-mix-format'
-
-" Language support ~ Rust
-Plug 'rust-lang/rust.vim'
-
-" Language support ~ Swift
-Plug 'toyamarinyon/vim-swift'
-
-" Language support ~ Front-End
-Plug 'yuezk/vim-js'
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ['javascript', 'javascript.jsx', 'typescript', 'typescript.tsx']}
-Plug 'jparise/vim-graphql'
-
-" File Explorer with Icons
-Plug 'kyazdani42/nvim-tree.lua'
-Plug 'kyazdani42/nvim-web-devicons'
-
-" File search
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-
-" Manage and restore sessions
-Plug 'rmagatti/auto-session'
-Plug 'rmagatti/session-lens' " Requires 'nvim-telescope/telescope.nvim' and it's dependencies
-
-" Status bar
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" Display Git diff in the sign column
-Plug 'airblade/vim-gitgutter'
-
-" Commenting
-Plug 'tpope/vim-commentary'
-
-" Distraction-free writing mode
-Plug 'junegunn/goyo.vim'
-
-" Snazzy tabs
-Plug 'akinsho/nvim-bufferline.lua'
-
-" Easy file navigation
-Plug 'phaazon/hop.nvim'
-
-Plug 'akinsho/nvim-toggleterm.lua'
-
-call plug#end()
+lua require("plugins")
 
 " Enable 24bit true color
 set termguicolors
@@ -94,7 +31,7 @@ set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
 set ignorecase " Ignore case when searching
-set smartcase " When searching try to be smart about cases 
+set smartcase " When searching try to be smart about cases
 set hlsearch  " Highlight search results
 set incsearch " Makes search act like search in modern browsers
 set lazyredraw " Don't redraw while executing macros (good performance config)
@@ -126,20 +63,20 @@ set autoread
 au FocusGained,BufEnter * checktime
 
 " Map leader to comma
-let mapleader = "," 
+let mapleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
 
 " Map Esc to tn
-inoremap tn <Esc> 
+inoremap tn <Esc>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove<cr>
-map <leader>t<leader> :tabnext<cr> 
+map <leader>t<leader> :tabnext<cr>
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -164,7 +101,7 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 function! CmdLine(str)
     call feedkeys(":" . a:str)
-endfunction 
+endfunction
 
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
@@ -186,31 +123,14 @@ endfunction
 " Press Space to turn off highlighting and clear any message already displayed.
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-"
-" Bufferline preferences
-" ---------------------
-"
-lua require("bufferline").setup{}
 
-"
-" Toggleterm preferences
-" ---------------------
-"
+" Elixir preferences
+let g:mix_format_on_save = 1
 
-lua << EOF
-require('toggleterm').setup {
-    size = 20,
-    open_mapping = [[<C-j>]],
-    shade_filetypes = {},
-    shade_terminals = true,
-    shading_factor = '1',
-    start_in_insert = true,
-    persist_size = true,
-    direction = 'horizontal'
-}
-EOF
+" Keep syntax highlighting in sync in larger React files
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
-"
 " Telescope preferences
 " ---------------------
 "
@@ -297,35 +217,22 @@ let g:rigel_airline = 1
 let g:airline_theme = 'rigel'
 let g:airline_powerline_fonts = 1
 
-" Elixir preferences
-let g:mix_format_on_save = 1
-
-" Keep syntax highlighting in sync in larger React files
-autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
-autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
-
-
 "
 " COC Preferences
 " ---------------------
 "
-
-" coc extensions
 let g:coc_global_extensions = [
   \ 'coc-elixir',
   \ 'coc-emmet',
   \ 'coc-eslint',
   \ 'coc-css',
   \ 'coc-html',
-  \ 'coc-json',  
+  \ 'coc-json',
   \ 'coc-pairs',
   \ 'coc-prettier',
   \ 'coc-tsserver',
   \ 'coc-yaml'
   \ ]
-
-" Comment out line(s)
-nnoremap <leader>c :Commentary<CR> 
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
