@@ -131,6 +131,85 @@ let g:mix_format_on_save = 1
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
+"
+" Airline preferences
+" ---------------------
+"
+let g:rigel_airline = 1
+let g:airline_theme = 'rigel'
+let g:airline_powerline_fonts = 1
+
+"
+" COC Preferences
+" ---------------------
+"
+let g:coc_global_extensions = [
+  \ 'coc-elixir',
+  \ 'coc-emmet',
+  \ 'coc-eslint',
+  \ 'coc-css',
+  \ 'coc-html',
+  \ 'coc-json',
+  \ 'coc-pairs',
+  \ 'coc-prettier',
+  \ 'coc-tsserver',
+  \ 'coc-yaml'
+  \ ]
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Rename Symbol
+nmap <leader>rn <Plug>(coc-rename)
+
+" Fix autofix problem of current line
+nmap <leader>qf <Plug>(coc-fix-current)
+
+" Show documentation
+nnoremap <silent> H :call <sid>show_documentation()<cr>
+
+function! s:show_documentation()
+  if (CocHasProvider('hover'))
+    call CocAction('doHover')
+  endif
+endfunction
+
+"
+" Goyo preferences
+" ---------------------
+"
+nnoremap <silent> <C-k> :Goyo<CR>
+
+let g:goyo_width = 150
+
+"
+" Hop preferences
+" ---------------------
+"
+map <silent> s :HopWord<CR>
+map <silent> <Leader>p :HopPattern<CR>
+nmap <silent> <Leader>s :HopChar1<CR>
+nmap <silent> <Leader>ss :HopChar2<CR>
+map <silent> <Leader>l :HopLine<CR>
+
+"
+" NVIM Tree preferences
+" ---------------------
+"
+let g:nvim_tree_width = 35
+let g:nvim_tree_auto_close = 1
+let g:nvim_tree_follow = 1
+let g:nvim_tree_indent_markers = 1
+let g:nvim_tree_git_hl = 1
+let g:nvim_tree_highlight_opened_files = 1
+
+nnoremap <C-b> :NvimTreeToggle<CR>
+nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <leader>n :NvimTreeFindFile<CR>
+
 " Telescope preferences
 " ---------------------
 "
@@ -190,67 +269,3 @@ require('telescope').setup{
   }
 }
 EOF
-
-"
-" Hop preferences
-" ---------------------
-"
-map <silent> s :HopWord<CR>
-map <silent> <Leader>p :HopPattern<CR>
-nmap <silent> <Leader>s :HopChar1<CR>
-nmap <silent> <Leader>ss :HopChar2<CR>
-map <silent> <Leader>l :HopLine<CR>
-
-"
-" Goyo preferences
-" ---------------------
-"
-nnoremap <silent> <C-k> :Goyo<CR>
-
-let g:goyo_width = 150
-
-"
-" Airline preferences
-" ---------------------
-"
-let g:rigel_airline = 1
-let g:airline_theme = 'rigel'
-let g:airline_powerline_fonts = 1
-
-"
-" COC Preferences
-" ---------------------
-"
-let g:coc_global_extensions = [
-  \ 'coc-elixir',
-  \ 'coc-emmet',
-  \ 'coc-eslint',
-  \ 'coc-css',
-  \ 'coc-html',
-  \ 'coc-json',
-  \ 'coc-pairs',
-  \ 'coc-prettier',
-  \ 'coc-tsserver',
-  \ 'coc-yaml'
-  \ ]
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Rename Symbol
-nmap <leader>rn <Plug>(coc-rename)
-
-" Fix autofix problem of current line
-nmap <leader>qf <Plug>(coc-fix-current)
-
-" Show documentation
-nnoremap <silent> H :call <sid>show_documentation()<cr>
-
-function! s:show_documentation()
-  if (CocHasProvider('hover'))
-    call CocAction('doHover')
-  endif
-endfunction
