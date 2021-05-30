@@ -80,7 +80,19 @@ return require("packer").startup(function()
     use {
         'akinsho/nvim-bufferline.lua',
         requires = 'kyazdani42/nvim-web-devicons',
-        config = "require'bufferline'.setup{}"
+        config = function()
+            require('bufferline').setup {
+                options = {
+                    offsets = {{
+                        filetype = "NvimTree",
+                        text = "File Explorer",
+                        highlight = "Directory",
+                        text_align = "left"
+                    }},
+                    separator_style = "slant"
+                }
+            }
+        end
     }
 
     -- Terminal Integration
