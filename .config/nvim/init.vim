@@ -71,18 +71,6 @@ nmap <leader>w :w!<cr>
 " Map Esc to tn
 inoremap tn <Esc>
 
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove<cr>
-map <leader>t<leader> :tabnext<cr>
-
-" Let 'tl' toggle between this and the last accessed tab
-let g:lasttab = 1
-nmap <Leader>pp :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
-
 " Turn terminal to normal mode with escape
 tnoremap tn <C-\><C-n>
 
@@ -134,6 +122,7 @@ autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+
 "
 " Airline preferences
 " ---------------------
@@ -141,6 +130,21 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 let g:rigel_airline = 1
 let g:airline_theme = 'rigel'
 let g:airline_powerline_fonts = 1
+
+"
+" Bufferline preferences
+" ---------------------
+"
+nnoremap <silent> <TAB> :BufferLineCycleNext<CR>
+nnoremap <silent> <S-TAB> :BufferLineCyclePrev<CR>
+
+" These commands will move the current buffer backwards or forwards in the bufferline
+nnoremap <silent><mymap> :BufferLineMoveNext<CR>
+nnoremap <silent><mymap> :BufferLineMovePrev<CR>
+
+nnoremap <silent>be :BufferLineSortByExtension<CR>
+nnoremap <silent>bd :BufferLineSortByDirectory<CR>
+
 
 "
 " COC Preferences
@@ -250,7 +254,7 @@ require('telescope').setup{
       },
     },
     file_sorter =  require'telescope.sorters'.get_fuzzy_file,
-    file_ignore_patterns = {'node_modules', 'dist'},
+    file_ignore_patterns = {},
     generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
     shorten_path = true,
     winblend = 0,
@@ -269,6 +273,6 @@ require('telescope').setup{
 
     -- Developer configurations: Not meant for general override
     buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
-  }
+  },
 }
 EOF

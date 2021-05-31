@@ -54,7 +54,17 @@ return require("packer").startup(function()
         requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
     }
 
-    use 'kyazdani42/nvim-tree.lua'
+    use {
+        'ojroques/nvim-lspfuzzy',
+        requires = {{'junegunn/fzf'}, {'junegunn/fzf.vim'}},
+        config = "require('lspfuzzy').setup {}"
+    }
+
+    use {
+        'kyazdani42/nvim-tree.lua',
+        requires = 'kyazdani42/nvim-web-devicons'
+    }
+
     use 'phaazon/hop.nvim'
 
     -- Session Management
@@ -76,23 +86,10 @@ return require("packer").startup(function()
 
     use "windwp/nvim-ts-autotag"
 
-    -- Snazzy tabs
+    -- Tabs, as understood by any other editor. 
     use {
-        'akinsho/nvim-bufferline.lua',
-        requires = 'kyazdani42/nvim-web-devicons',
-        config = function()
-            require('bufferline').setup {
-                options = {
-                    offsets = {{
-                        filetype = "NvimTree",
-                        text = "File Explorer",
-                        highlight = "Directory",
-                        text_align = "left"
-                    }},
-                    separator_style = "slant"
-                }
-            }
-        end
+        'romgrk/barbar.nvim',
+        requires = 'kyazdani42/nvim-web-devicons'
     }
 
     -- Terminal Integration
@@ -110,6 +107,12 @@ return require("packer").startup(function()
                 direction = 'horizontal'
             }
         end
+    }
+
+    -- Smooth scrolling
+    use {
+        'karb94/neoscroll.nvim',
+        config = "require('neoscroll').setup()"
     }
 
     -- Comment out line(s)
