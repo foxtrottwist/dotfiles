@@ -74,6 +74,9 @@ inoremap tn <Esc>
 " Turn terminal to normal mode with escape
 tnoremap tn <C-\><C-n>
 
+" Show list of Buffers
+nnoremap <Leader>pp :Buffers<CR>
+
 " Moving lines
 nnoremap <A-Down> :m .+1<CR>==
 nnoremap <A-Up> :m .-2<CR>==
@@ -132,19 +135,14 @@ let g:airline_theme = 'rigel'
 let g:airline_powerline_fonts = 1
 
 "
-" Bufferline preferences
+" BarBar preferences
 " ---------------------
 "
-nnoremap <silent> <TAB> :BufferLineCycleNext<CR>
-nnoremap <silent> <S-TAB> :BufferLineCyclePrev<CR>
-
-" These commands will move the current buffer backwards or forwards in the bufferline
-nnoremap <silent><mymap> :BufferLineMoveNext<CR>
-nnoremap <silent><mymap> :BufferLineMovePrev<CR>
-
-nnoremap <silent>be :BufferLineSortByExtension<CR>
-nnoremap <silent>bd :BufferLineSortByDirectory<CR>
-
+nnoremap <silent> <TAB> BufferNext<CR>
+nnoremap <silent> <S-TAB> :BufferPrevious<CR>
+nnoremap <silent> <Leader>bc :BufferClose<CR>
+nnoremap <silent> <Leader>bd :BufferOrderByDirectory<CR>
+nnoremap <silent> <Leader>bl :BufferOrderByLanguage<CR>
 
 "
 " COC Preferences
@@ -196,10 +194,10 @@ let g:goyo_width = 150
 " Hop preferences
 " ---------------------
 "
-map <silent> s :HopWord<CR>
+nmap <silent> s :HopChar2<CR>
+map <silent> S :HopWord<CR>
 map <silent> <Leader>p :HopPattern<CR>
 nmap <silent> <Leader>s :HopChar1<CR>
-nmap <silent> <Leader>ss :HopChar2<CR>
 map <silent> <Leader>l :HopLine<CR>
 
 "
