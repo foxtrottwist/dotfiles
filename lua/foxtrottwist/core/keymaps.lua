@@ -46,10 +46,10 @@ keymap.set("n", "<leader>gg", ":DogeGenerate<CR>", { desc = "Generate docs for s
 
 -- gitsigns
 keymap.set(
-	"n",
-	"<leader>tb",
-	":Gitsigns toggle_current_line_blame<CR>",
-	{ desc = "Toggle Git line blame.", silent = true }
+  "n",
+  "<leader>tb",
+  ":Gitsigns toggle_current_line_blame<CR>",
+  { desc = "Toggle Git line blame.", silent = true }
 )
 keymap.set("n", "<leader>td", ":Gitsigns toggle_deleted<CR>", { desc = "Toggle deleted lines.", silent = true })
 
@@ -58,22 +58,22 @@ keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 
 -- trouble
 keymap.set("n", "<leader>xx", function()
-	require("trouble").toggle()
+  require("trouble").toggle()
 end)
 keymap.set("n", "<leader>xw", function()
-	require("trouble").toggle("workspace_diagnostics")
+  require("trouble").toggle("workspace_diagnostics")
 end)
 keymap.set("n", "<leader>xd", function()
-	require("trouble").toggle("document_diagnostics")
+  require("trouble").toggle("document_diagnostics")
 end)
 keymap.set("n", "<leader>xq", function()
-	require("trouble").toggle("quickfix")
+  require("trouble").toggle("quickfix")
 end)
 keymap.set("n", "<leader>xl", function()
-	require("trouble").toggle("loclist")
+  require("trouble").toggle("loclist")
 end)
 keymap.set("n", "<leader>xr", function()
-	require("trouble").toggle("lsp_references")
+  require("trouble").toggle("lsp_references")
 end)
 
 -- undo-tree
