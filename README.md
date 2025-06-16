@@ -6,7 +6,9 @@ A stability-focused Neovim setup optimized for multi-language development workfl
 
 Built this configuration to solve recurring stability issues I was experiencing with my development environment. After dealing with plugin crashes and inconsistent LSP behavior, I needed a reliable setup that could handle my daily work across TypeScript, Python, Go, and Lua projects without constant troubleshooting.
 
+
 ## Tech Stack
+<img src="https://raw.githubusercontent.com/foxtrottwist/foxtrottwist/main/assets/brider-codes.png" alt="Bridge Builder Fox mascot using Neovim" width="600" height="400" align="right">
 
 **Core Framework:**
 - Neovim 0.11+ - Modern LSP capabilities and improved performance
@@ -25,8 +27,6 @@ Built this configuration to solve recurring stability issues I was experiencing 
 - Treesitter - Reliable syntax highlighting with error handling
 - Oil.nvim - Directory navigation
 - Harpoon - Quick file switching
-
-<img src="https://raw.githubusercontent.com/foxtrottwist/foxtrottwist/main/assets/brider-codes.png" alt="Bridge Builder Fox mascot in helpful builder pose" width="64" height="64" align="right">
 
 ## Key Features
 
