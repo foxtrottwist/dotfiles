@@ -85,9 +85,3 @@ nvim
 - Regular `:checkhealth` validation to catch configuration drift
 - Proactive cleanup of unused plugins and language servers
 - Version-locked plugins in `lazy-lock.json` for reproducible environments
-
-## Personal Notes
-
-This configuration evolved from frustration with unreliable development environments. The focus on stability over features means fewer plugins but more consistent daily productivity. Each language server configuration has been tested with real projects to ensure reliable completion, formatting, and error detection.
-
-The error handling additions came from experiencing too many plugin crashes during important work sessions. Now when something breaks, Neovim continues functioning and provides clear notifications about what failed.
