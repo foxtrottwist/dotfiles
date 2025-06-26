@@ -139,5 +139,33 @@ return {
       capabilities = capabilities,
       on_attach = on_attach,
     })
+
+    -- PHP Language Servers
+    lspconfig["intelephense"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        intelephense = {
+          telemetry = {
+            enabled = false,
+          },
+          files = {
+            maxSize = 1000000,
+          },
+        },
+      },
+    })
+
+    lspconfig["phpactor"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      root_dir = function(fname)
+        return lspconfig.util.root_pattern("composer.json", ".git")(fname) or lspconfig.util.path.dirname(fname)
+      end,
+      init_options = {
+        ["language_server_phpstan.enabled"] = false,
+        ["language_server_psalm.enabled"] = false,
+      },
+    })
   end,
 }

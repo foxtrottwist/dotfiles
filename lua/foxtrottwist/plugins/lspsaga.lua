@@ -15,6 +15,8 @@ return {
 				keys = {
 					edit = "<CR>",
 				},
+				-- Fix cursor position errors with multiple LSPs
+				save_pos = false,
 			},
 			ui = {
 				-- border type can be single,double,rounded,solid,shadow.
