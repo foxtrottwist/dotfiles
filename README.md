@@ -8,7 +8,6 @@ Built this configuration to solve recurring stability issues I was experiencing 
 
 
 ## Tech Stack
-<img src="https://raw.githubusercontent.com/foxtrottwist/foxtrottwist/main/assets/brider-codes.png" alt="Bridge Builder Fox mascot using Neovim" width="600" height="400" align="right">
 
 **Core Framework:**
 - Neovim 0.11+ - Modern LSP capabilities and improved performance
