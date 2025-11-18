@@ -46,6 +46,7 @@ opt.termguicolors = true
 opt.background = "dark" -- colorschemes that can be light or dark will be made dark
 opt.scrolloff = 8
 opt.signcolumn = "yes" -- show sign column so that text doesn't shift
+opt.fillchars = { eob = " " } -- hide ~ on empty lines
 
 -- backspace
 opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
@@ -70,7 +71,7 @@ vim.opt.undofile = true
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
-		vim.highlight.on_yank()
+		vim.hl.on_yank()
 	end,
 	group = highlight_group,
 	pattern = "*",

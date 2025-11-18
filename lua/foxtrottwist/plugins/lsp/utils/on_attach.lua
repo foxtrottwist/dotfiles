@@ -10,7 +10,7 @@ return function(_, bufnr)
 	end
 
 	nmap("gD", vim.lsp.buf.declaration, "Go to declaration")
-	nmap("gd", "<cmd>Lspsaga peek_definition<CR>", "See definition and make edits in window")
+	nmap("gd", "<cmd>Lspsaga peek_definition<CR>", "Peek definition and edit in window")
 	nmap("gi", vim.lsp.buf.implementation, "Go to implementation")
 	nmap("K", "<cmd>Lspsaga hover_doc<CR>" --[[vim.lsp.buf.hover]], "Show documentation for what is under cursor")
 	nmap("<leader>ca", vim.lsp.buf.code_action, "See available code actions")

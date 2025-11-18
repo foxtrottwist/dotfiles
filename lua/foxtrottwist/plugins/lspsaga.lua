@@ -14,9 +14,11 @@ return {
 			definition = {
 				keys = {
 					edit = "<CR>",
+					quit = "q",
 				},
-				-- Fix cursor position errors with multiple LSPs
-				save_pos = false,
+				-- Prevent multiple windows
+				width = 0.6,
+				height = 0.6,
 			},
 			ui = {
 				-- border type can be single,double,rounded,solid,shadow.
