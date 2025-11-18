@@ -76,6 +76,10 @@ keymap.set("n", "<leader>xr", function()
   require("trouble").toggle("lsp_references")
 end)
 
+-- glance (additional LSP preview keybindings)
+keymap.set("n", "gr", "<cmd>Glance references<CR>", { desc = "Preview references with Glance" })
+keymap.set("n", "gt", "<cmd>Glance type_definitions<CR>", { desc = "Preview type definitions with Glance" })
+
 -- undo-tree
 keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Open Undotree." })
 
