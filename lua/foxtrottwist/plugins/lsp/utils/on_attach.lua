@@ -12,7 +12,7 @@ return function(_, bufnr)
 	nmap("gD", vim.lsp.buf.declaration, "Go to declaration")
 	nmap("gd", "<cmd>Glance definitions<CR>", "Peek definition and edit in window")
 	nmap("gi", vim.lsp.buf.implementation, "Go to implementation")
-	nmap("K", vim.lsp.buf.hover, "Show documentation for what is under cursor")
+	-- K is handled by hover.nvim for enhanced hover with multiple providers
 	nmap("<leader>ca", vim.lsp.buf.code_action, "See available code actions")
 	nmap("<leader>fr", "<cmd>Telescope lsp_references<CR>", "Show definition references")
 	nmap("<leader>ld", vim.diagnostic.open_float, "show diagnostics for line")
