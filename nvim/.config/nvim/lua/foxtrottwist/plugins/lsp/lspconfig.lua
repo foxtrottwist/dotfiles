@@ -7,26 +7,22 @@ return {
       "smjonas/inc-rename.nvim",
       config = true,
     },
-    { -- Useful status updates for LSP
+    {
       "j-hui/fidget.nvim",
       opts = {
-        window = {
-          blend = 0,
+        notification = {
+          window = {
+            winblend = 0,
+          },
         },
       },
     },
   },
 
   config = function()
-    -- import lspconfig plugin
-    local lspconfig = require("lspconfig")
-    -- import cmp-nvim-lsp plugin
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
-    -- used to enable autocompletion (assign to every lsp server config)
-    local capabilities = cmp_nvim_lsp.default_capabilities()
-
-    -- Configure diagnostic signs using modern API
+    -- Configure diagnostic signs
     vim.diagnostic.config({
       signs = {
         text = {
@@ -38,138 +34,56 @@ return {
       },
     })
 
-    local on_attach = require("foxtrottwist.plugins.lsp.utils.on_attach")
-
-    lspconfig["cssls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
+    -- Global LSP configuration (applies to all servers)
+    vim.lsp.config("*", {
+      capabilities = cmp_nvim_lsp.default_capabilities(),
     })
 
-    lspconfig["emmet_ls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss" },
-    })
+    -- LspAttach autocmd for keymaps (replaces on_attach)
+    vim.api.nvim_create_autocmd("LspAttach", {
+      group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
+      callback = function(ev)
+        local bufnr = ev.buf
 
-    lspconfig.gleam.setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+        local nmap = function(keys, func, desc)
+          if desc then
+            desc = "LSP: " .. desc
+          end
+          vim.keymap.set("n", keys, func, { noremap = true, silent = true, buffer = bufnr, desc = desc })
+        end
 
-    lspconfig["gopls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = {
-        gopls = {
-          gofumpt = true,
-        },
-        flags = {
-          debounce_text_changes = 150,
-        },
-      },
-    })
-
-    lspconfig["graphql"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      filetypes = { "graphql", "gql", "typescriptreact", "javascriptreact" },
-    })
-
-    lspconfig["html"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
-    -- configure lua server (with special settings)
-    lspconfig["lua_ls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = { -- custom settings for lua
-        Lua = {
-          -- make the language server recognize "vim" global
-          diagnostics = {
-            globals = { "vim" },
-          },
-          workspace = {
-            -- make language server aware of runtime files
-            library = {
-              [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-              [vim.fn.stdpath("config") .. "/lua"] = true,
-            },
-          },
-        },
-      },
-    })
-
-    lspconfig["pyright"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = {
-        python = {
-          analysis = {
-            autoSearchPaths = true,
-            useLibraryCodeForTypes = true,
-            diagnosticMode = "workspace",
-            typeCheckingMode = "basic",
-          }
-        }
-      }
-    })
-
-    lspconfig["sourcekit"].setup({
-      capabilities = capabilities,
-      cmd = { "sourcekit-lsp" },
-      on_attach = on_attach,
-      filetypes = { "swift", "c", "cpp", "objective-c", "objective-cpp" },
-    })
-
-    lspconfig.rust_analyzer.setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      cmd = {
-        "rustup",
-        "run",
-        "stable",
-        "rust-analyzer",
-      },
-    })
-
-    lspconfig["tailwindcss"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
-    lspconfig["ts_ls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
-    -- PHP Language Servers
-    lspconfig["intelephense"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = {
-        intelephense = {
-          telemetry = {
-            enabled = false,
-          },
-          files = {
-            maxSize = 1000000,
-          },
-        },
-      },
-    })
-
-    lspconfig["phpactor"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      root_dir = function(fname)
-        return lspconfig.util.root_pattern("composer.json", ".git")(fname) or lspconfig.util.path.dirname(fname)
+        nmap("gD", vim.lsp.buf.declaration, "Go to declaration")
+        nmap("gd", "<cmd>Glance definitions<CR>", "Peek definition and edit in window")
+        nmap("gi", vim.lsp.buf.implementation, "Go to implementation")
+        -- K is handled by hover.nvim for enhanced hover with multiple providers
+        nmap("<leader>ca", vim.lsp.buf.code_action, "See available code actions")
+        nmap("<leader>fr", "<cmd>Telescope lsp_references<CR>", "Show definition references")
+        nmap("<leader>ld", vim.diagnostic.open_float, "show diagnostics for line")
+        nmap("<leader>d", vim.diagnostic.open_float, "show diagnostics for cursor")
+        nmap("[d", vim.diagnostic.goto_prev, "jump to previous diagnostic in buffer")
+        nmap("]d", vim.diagnostic.goto_next, "jump to next diagnostic in buffer")
+        nmap("<leader>rn", ":IncRename ", "Smart rename")
+        nmap("<leader>sd", "<cmd>Telescope lsp_document_symbols<CR>", "Show current document symbols")
+        nmap("<leader>sw", "<cmd>Telescope lsp_workspace_symbols<CR>", "Show workspace symbols")
       end,
-      init_options = {
-        ["language_server_phpstan.enabled"] = false,
-        ["language_server_psalm.enabled"] = false,
-      },
+    })
+
+    -- Enable all configured LSP servers
+    vim.lsp.enable({
+      "cssls",
+      "emmet_ls",
+      "gleam",
+      "gopls",
+      "graphql",
+      "html",
+      "intelephense",
+      "lua_ls",
+      "phpactor",
+      "pyright",
+      "rust_analyzer",
+      "sourcekit",
+      "tailwindcss",
+      "ts_ls",
     })
   end,
 }
