@@ -139,4 +139,8 @@ export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 
 [ -f ~/.env.claude ] && source ~/.env.claude
-eval "$(zellij setup --generate-auto-start zsh)"
+
+# Zellij auto-start: attach to "main" session or create it if it doesn't exist
+if [[ -z "$ZELLIJ" && -z "$ZELLIJ_SESSION_NAME" ]]; then
+  zellij attach -c main
+fi
