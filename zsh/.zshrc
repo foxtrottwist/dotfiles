@@ -102,45 +102,68 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#
 
 
-# echo 'Hello, good luck!'
+# ============================================================
+# PATH Configuration
+# ============================================================
 
-# PATH ALTERATIONS
-## Node
-PATH="/usr/local/bin:$PATH:./node_modules/.bin";
+# Local bin (highest priority)
+export PATH="$HOME/.local/bin:$PATH"
 
-# CDPATH ALTERATIONS
-CDPATH=.:$HOME:$HOME/Repos
+# Node modules (project-local binaries)
+PATH="/usr/local/bin:$PATH:./node_modules/.bin"
 
+# ============================================================
+# CDPATH - Quick directory navigation
+# ============================================================
+CDPATH=".:$HOME:$HOME/Repos"
+
+# ============================================================
+# Aliases
+# ============================================================
 alias vi='nvim'
 
-eval "$(mise activate zsh)"
+# ============================================================
+# Tool Initialization (with existence checks)
+# ============================================================
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/miniconda3/bin:$PATH"
-    fi
+# Mise - runtime version manager
+if command -v mise &>/dev/null; then
+    eval "$(mise activate zsh)"
 fi
-unset __conda_setup
-# <<< conda initialize <<<
 
+# Conda - Python environment manager (optional)
+if [[ -f "$HOME/miniconda3/bin/conda" ]]; then
+    __conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+    if [[ $? -eq 0 ]]; then
+        eval "$__conda_setup"
+    else
+        if [[ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]]; then
+            . "$HOME/miniconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="$HOME/miniconda3/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+fi
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
-# End of LM Studio CLI section
+# LM Studio CLI (optional)
+if [[ -d "$HOME/.lmstudio/bin" ]]; then
+    export PATH="$PATH:$HOME/.lmstudio/bin"
+fi
 
-[ -f ~/.env.claude ] && source ~/.env.claude
+# ============================================================
+# Environment Files (secrets, API keys, etc.)
+# ============================================================
+[[ -f ~/.env.claude ]] && source ~/.env.claude
 
-# Zellij auto-start: attach to "main" session or create it if it doesn't exist
-if [[ -z "$ZELLIJ" && -z "$ZELLIJ_SESSION_NAME" ]]; then
-  zellij attach -c main
+# ============================================================
+# Zellij - Terminal Multiplexer
+# ============================================================
+# Auto-attach to "main" session if not already in Zellij
+if command -v zellij &>/dev/null; then
+    if [[ -z "$ZELLIJ" && -z "$ZELLIJ_SESSION_NAME" ]]; then
+        zellij attach -c main
+    fi
 fi
