@@ -55,10 +55,10 @@ install_brew_packages() {
 
     if [[ "$OS" == "linux" ]]; then
         # Linux: skip casks, install only brew formulae
-        brew bundle --file="$DOTFILES_DIR/Brewfile" --no-lock --formula
+        brew bundle --file="$DOTFILES_DIR/Brewfile" --formula
     else
         # macOS: install everything including casks
-        brew bundle --file="$DOTFILES_DIR/Brewfile" --no-lock
+        brew bundle --file="$DOTFILES_DIR/Brewfile"
     fi
 
     success "Packages installed from Brewfile"

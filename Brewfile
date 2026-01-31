@@ -1,9 +1,6 @@
 # Dotfiles Brewfile
 # Install with: brew bundle --file=Brewfile
 
-# Taps
-tap "homebrew/bundle"
-
 # CLI Tools
 brew "stow"           # Symlink manager for dotfiles
 brew "neovim"         # Text editor
