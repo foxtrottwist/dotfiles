@@ -65,14 +65,14 @@ install_brew_packages() {
     brew install "${packages[@]}"
     success "Core packages installed"
 
-    # WezTerm requires cask on macOS
+    # GUI apps require cask on macOS
     if [[ "$OS" == "macos" ]]; then
-        if ! brew list --cask wezterm &>/dev/null; then
-            info "Installing WezTerm..."
-            brew install --cask wezterm
-            success "WezTerm installed"
+        if ! brew list --cask ghostty &>/dev/null; then
+            info "Installing Ghostty..."
+            brew install --cask ghostty
+            success "Ghostty installed"
         else
-            success "WezTerm already installed"
+            success "Ghostty already installed"
         fi
     fi
 }
@@ -116,7 +116,7 @@ deploy_dotfiles() {
     info "Deploying dotfiles with stow..."
     cd "$DOTFILES_DIR"
 
-    local packages=(nvim zsh zellij mise wezterm)
+    local packages=(nvim zsh zellij mise ghostty)
 
     for pkg in "${packages[@]}"; do
         if [[ -d "$pkg" ]]; then
@@ -149,8 +149,8 @@ verify_installation() {
         "$HOME/.config/nvim"
         "$HOME/.config/zellij"
         "$HOME/.config/mise"
+        "$HOME/.config/ghostty"
         "$HOME/.zshrc"
-        "$HOME/.wezterm.lua"
     )
 
     for link in "${symlinks[@]}"; do

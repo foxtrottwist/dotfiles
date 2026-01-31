@@ -1,0 +1,101 @@
+# Ghostty Configuration
+# Optimized for Neovim compatibility and terminal multiplexing
+
+# Theme
+theme = catppuccin-macchiato.conf
+
+# Font Configuration
+font-family = "BlexMono Nerd Font"
+font-size = 14
+font-feature = +liga
+font-feature = +zero
+font-feature = +ss01
+font-feature = +ss02
+font-feature = +ss03
+font-feature = +ss04
+font-feature = +ss05
+
+# Window Management
+window-save-state = always
+window-new-tab-position = current
+window-decoration = true
+window-title-font-family = "BlexMono Nerd Font"
+window-padding-x = 8
+window-padding-y = 8
+window-padding-balance = true
+window-padding-color = extend
+
+# Terminal Behavior
+shell-integration = zsh
+shell-integration-features = cursor
+shell-integration-features = sudo
+shell-integration-features = title
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = false
+mouse-hide-while-typing = true
+confirm-close-surface = false
+
+# Cursor Configuration
+cursor-style = block
+cursor-style-blink = true
+cursor-invert-fg-bg = true
+cursor-click-to-move = true
+
+# Scrollback
+scrollback-limit = 10000
+mouse-scroll-multiplier = 3
+
+# Bell disabled (using default)
+
+# Advanced Terminal Features
+# Essential for Neovim compatibility
+term = xterm-256color
+title = "Ghostty"
+osc-color-report-format = 8-bit
+
+# Neovim-specific compatibility
+# Enable true color support
+resize-overlay = never
+resize-overlay-position = center
+
+# Performance optimizations
+macos-non-native-fullscreen = true
+macos-option-as-alt = true
+working-directory = inherit
+
+# Keybindings optimized for terminal multiplexing
+# These don't conflict with Zellij's default bindings
+keybind = cmd+t=new_tab
+keybind = cmd+w=close_surface
+keybind = cmd+shift+left=previous_tab
+keybind = cmd+shift+right=next_tab
+keybind = cmd+1=goto_tab:1
+keybind = cmd+2=goto_tab:2
+keybind = cmd+3=goto_tab:3
+keybind = cmd+4=goto_tab:4
+keybind = cmd+5=goto_tab:5
+keybind = cmd+6=goto_tab:6
+keybind = cmd+7=goto_tab:7
+keybind = cmd+8=goto_tab:8
+keybind = cmd+9=goto_tab:9
+keybind = cmd+0=goto_tab:10
+
+# Split management (if you prefer Ghostty's built-in splits)
+keybind = cmd+d=new_split:right
+keybind = cmd+shift+d=new_split:down
+keybind = cmd+h=goto_split:left
+keybind = cmd+j=goto_split:down
+keybind = cmd+k=goto_split:up
+keybind = cmd+l=goto_split:right
+
+# Text selection and copying
+keybind = cmd+c=copy_to_clipboard
+keybind = cmd+v=paste_from_clipboard
+
+# Font size adjustment
+keybind = cmd+equal=increase_font_size:1
+keybind = cmd+minus=decrease_font_size:1
+keybind = cmd+0=reset_font_size
+
+keybind = shift+enter=text:\n
