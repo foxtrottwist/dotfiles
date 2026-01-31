@@ -114,7 +114,7 @@ keybinds clear-defaults=true {
             }
             SwitchToMode "normal"
         }
-        bind "Ctrl o" { SwitchToMode "normal"; }
+        bind "Ctrl Shift o" { SwitchToMode "normal"; }
         bind "p" {
             LaunchOrFocusPlugin "plugin-manager" {
                 floating true
@@ -162,7 +162,7 @@ keybinds clear-defaults=true {
         bind "Ctrl h" { SwitchToMode "move"; }
     }
     shared_except "locked" "session" {
-        bind "Ctrl o" { SwitchToMode "session"; }
+        bind "Ctrl Shift o" { SwitchToMode "session"; }
     }
     // Ctrl+B reserved for Claude Code (background tasks)
     // Use Ctrl+a for tmux mode instead if needed
