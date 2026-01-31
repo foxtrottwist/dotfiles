@@ -62,7 +62,9 @@ resize-overlay-position = center
 # Performance optimizations
 macos-non-native-fullscreen = true
 macos-option-as-alt = true
-working-directory = inherit
+working-directory = home
+window-inherit-working-directory = true
+window-inherit-font-size = true
 
 # Keybindings - Zellij handles multiplexing, so disable Ghostty tabs/splits
 # Disable tabs
