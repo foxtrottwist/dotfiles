@@ -176,10 +176,11 @@ main() {
         success "Setup complete!"
         echo ""
         info "Next steps:"
-        echo "  1. Restart your terminal or run: source ~/.zshrc"
-        echo "  2. Open Neovim - plugins will auto-install via lazy.nvim"
-        echo "  3. Run :checkhealth in Neovim to verify LSP setup"
+        echo "  1. Open Neovim - plugins will auto-install via lazy.nvim"
+        echo "  2. Run :checkhealth in Neovim to verify LSP setup"
         echo ""
+        info "Sourcing ~/.zshrc..."
+        exec zsh
     else
         echo ""
         warn "Setup completed with warnings - check output above"
