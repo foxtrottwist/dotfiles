@@ -1,0 +1,65 @@
+# Starship Prompt Configuration
+# https://starship.rs/config/
+
+# Timeout for commands (ms)
+command_timeout = 1000
+
+# Newline between prompts
+add_newline = true
+
+# Prompt format
+format = """
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$rust\
+$golang\
+$python\
+$swift\
+$cmd_duration\
+$line_break\
+$character"""
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "blue bold"
+
+[git_branch]
+symbol = " "
+style = "purple"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "red"
+format = '([$all_status$ahead_behind]($style) )'
+
+[cmd_duration]
+min_time = 2000
+format = "[$duration](yellow) "
+
+[nodejs]
+symbol = " "
+format = "[$symbol$version](green) "
+detect_files = ["package.json", ".node-version"]
+
+[rust]
+symbol = " "
+format = "[$symbol$version](red) "
+
+[golang]
+symbol = " "
+format = "[$symbol$version](cyan) "
+
+[python]
+symbol = " "
+format = "[$symbol$version](yellow) "
+
+[swift]
+symbol = " "
+format = "[$symbol$version](orange) "

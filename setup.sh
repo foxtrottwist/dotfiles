@@ -49,32 +49,19 @@ install_homebrew() {
     success "Homebrew installed"
 }
 
-# Install core packages via Homebrew
+# Install packages via Brewfile
 install_brew_packages() {
-    local packages=(
-        stow
-        neovim
-        ripgrep
-        fd
-        zellij
-        mise
-        zsh
-    )
+    info "Installing packages from Brewfile..."
 
-    info "Installing core packages: ${packages[*]}"
-    brew install "${packages[@]}"
-    success "Core packages installed"
-
-    # GUI apps require cask on macOS
-    if [[ "$OS" == "macos" ]]; then
-        if ! brew list --cask ghostty &>/dev/null; then
-            info "Installing Ghostty..."
-            brew install --cask ghostty
-            success "Ghostty installed"
-        else
-            success "Ghostty already installed"
-        fi
+    if [[ "$OS" == "linux" ]]; then
+        # Linux: skip casks, install only brew formulae
+        brew bundle --file="$DOTFILES_DIR/Brewfile" --no-lock --formula
+    else
+        # macOS: install everything including casks
+        brew bundle --file="$DOTFILES_DIR/Brewfile" --no-lock
     fi
+
+    success "Packages installed from Brewfile"
 }
 
 # Install Oh My Zsh
@@ -116,7 +103,7 @@ deploy_dotfiles() {
     info "Deploying dotfiles with stow..."
     cd "$DOTFILES_DIR"
 
-    local packages=(nvim zsh zellij mise ghostty)
+    local packages=(nvim zsh zellij mise ghostty starship)
 
     for pkg in "${packages[@]}"; do
         if [[ -d "$pkg" ]]; then
@@ -135,7 +122,7 @@ verify_installation() {
     info "Verifying installation..."
     local failed=0
 
-    for cmd in nvim zellij mise stow rg fd; do
+    for cmd in nvim zellij mise stow rg fd starship; do
         if command -v "$cmd" &>/dev/null; then
             success "$cmd: $(command -v "$cmd")"
         else
@@ -150,6 +137,7 @@ verify_installation() {
         "$HOME/.config/zellij"
         "$HOME/.config/mise"
         "$HOME/.config/ghostty"
+        "$HOME/.config/starship.toml"
         "$HOME/.zshrc"
     )
 
