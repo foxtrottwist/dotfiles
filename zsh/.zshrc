@@ -172,4 +172,10 @@ if command -v zellij &>/dev/null; then
     if [[ -z "$ZELLIJ" && -z "$ZELLIJ_SESSION_NAME" ]]; then
         zellij attach -c main
     fi
+
+    # Reset zellij session - kills current session and starts fresh
+    zj-reset() {
+        zellij kill-session main 2>/dev/null
+        exec zsh
+    }
 fi
