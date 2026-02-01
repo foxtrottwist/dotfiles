@@ -2,7 +2,7 @@
 # Optimized for Neovim compatibility and terminal multiplexing
 
 # Theme
-theme = catppuccin-macchiato.conf
+theme = Catppuccin Macchiato
 
 # Font Configuration
 font-family = "BlexMono Nerd Font"
