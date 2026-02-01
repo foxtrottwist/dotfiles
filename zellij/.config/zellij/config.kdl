@@ -138,6 +138,11 @@ keybinds clear-defaults=true {
         }
     }
     shared_except "locked" {
+        // Pass through to terminal (Claude Code uses Ctrl+O for expand activity)
+        unbind "Ctrl o"
+        // Pass through Alt+Arrow for macOS word navigation
+        unbind "Alt left"
+        unbind "Alt right"
         bind "Alt down" { MoveFocus "down"; }
         bind "Alt up" { MoveFocus "up"; }
         bind "Alt +" { Resize "Increase"; }
