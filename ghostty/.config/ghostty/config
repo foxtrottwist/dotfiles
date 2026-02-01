@@ -94,6 +94,9 @@ keybind = cmd+l=unbind
 # Keep essential bindings
 keybind = cmd+c=copy_to_clipboard
 keybind = cmd+v=paste_from_clipboard
+# Cmd+Arrow for line navigation (Home/End)
+keybind = cmd+left=csi:H
+keybind = cmd+right=csi:F
 keybind = cmd+equal=increase_font_size:1
 keybind = cmd+minus=decrease_font_size:1
 keybind = cmd+shift+0=reset_font_size
