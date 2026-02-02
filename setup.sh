@@ -98,27 +98,87 @@ check_lm_studio() {
     fi
 }
 
-# Initialize git submodules
-init_submodules() {
-    info "Initializing git submodules..."
-    cd "$DOTFILES_DIR"
-    git submodule update --init --recursive
-    success "Submodules initialized"
+# Download latest release asset from GitHub
+# Usage: download_release_asset "owner/repo" "*.skill" "/output/dir"
+download_release_asset() {
+    local repo="$1"
+    local pattern="$2"
+    local output_dir="$3"
+
+    # Get latest release assets via GitHub API
+    local api_url="https://api.github.com/repos/$repo/releases/latest"
+    local release_json=$(curl -sf "$api_url" 2>/dev/null) || return 1
+
+    # Find asset matching pattern (convert glob to regex)
+    local regex_pattern=$(echo "$pattern" | sed 's/\*/.*/g')
+    local asset_url=$(echo "$release_json" | grep -o '"browser_download_url": *"[^"]*"' | \
+        grep -E "$regex_pattern" | head -1 | sed 's/.*"browser_download_url": *"\([^"]*\)".*/\1/')
+
+    [[ -z "$asset_url" ]] && return 1
+
+    local filename=$(basename "$asset_url")
+    curl -sfL "$asset_url" -o "$output_dir/$filename" 2>/dev/null || return 1
+    echo "$output_dir/$filename"
 }
 
-# Build MCP servers
-build_mcp_servers() {
-    local mcp_dir="$HOME/.claude/mcps/shortcuts-mcp"
+# Fetch skills from GitHub releases
+fetch_skills() {
+    info "Fetching skills from GitHub releases..."
 
-    if [[ -d "$mcp_dir" ]] && [[ -f "$mcp_dir/package.json" ]]; then
-        info "Building shortcuts-mcp..."
-        cd "$mcp_dir"
-        npm install --silent
-        npm run build --silent
-        success "shortcuts-mcp built"
+    local skills=(
+        "foxtrottwist/iterative-development"
+        "foxtrottwist/Iterative-work"
+        "foxtrottwist/code-audit"
+        "foxtrottwist/chat-migration"
+        "foxtrottwist/dotfiles-skill"
+        "foxtrottwist/prompt-dev"
+        "foxtrottwist/submodule-sync"
+        "foxtrottwist/job-apply"
+        "foxtrottwist/write"
+    )
+
+    local tmp_dir=$(mktemp -d)
+    local skills_dir="$HOME/.claude/skills"
+    mkdir -p "$skills_dir"
+
+    for repo in "${skills[@]}"; do
+        local name=$(basename "$repo")
+        local skill_file=$(download_release_asset "$repo" "*.skill" "$tmp_dir")
+        if [[ -f "$skill_file" ]]; then
+            unzip -o -q "$skill_file" -d "$skills_dir"
+            rm -f "$skill_file"
+            success "Fetched skill: $name"
+        else
+            warn "No release found: $name - using embedded if available"
+        fi
+    done
+
+    rm -rf "$tmp_dir"
+}
+
+# Fetch MCP servers from GitHub releases
+fetch_mcps() {
+    info "Fetching MCP servers from GitHub releases..."
+
+    local tmp_dir=$(mktemp -d)
+    local mcp_dir="$HOME/.claude/mcps"
+    mkdir -p "$mcp_dir"
+
+    # shortcuts-mcp
+    local mcpb_file=$(download_release_asset "foxtrottwist/shortcuts-mcp" "*.mcpb" "$tmp_dir")
+    if [[ -f "$mcpb_file" ]]; then
+        unzip -o -q "$mcpb_file" -d "$mcp_dir/shortcuts-mcp"
+        success "Fetched MCP: shortcuts-mcp"
+
+        # Add to Claude Code if not already configured
+        if command -v claude &>/dev/null; then
+            claude mcp add -s user --transport stdio shortcuts-mcp -- node "$mcp_dir/shortcuts-mcp/dist/server.js" 2>/dev/null || true
+        fi
     else
-        warn "shortcuts-mcp not found - run stow first"
+        warn "No release found: shortcuts-mcp"
     fi
+
+    rm -rf "$tmp_dir"
 }
 
 # Deploy dotfiles with stow
@@ -156,7 +216,6 @@ verify_installation() {
 
     # Check symlinks
     local symlinks=(
-        "$HOME/.claude/mcps/shortcuts-mcp"
         "$HOME/.claude/settings.json"
         "$HOME/.claude/skills"
         "$HOME/.config/ghostty"
@@ -193,9 +252,9 @@ main() {
     install_oh_my_zsh
     install_rust
     check_lm_studio
-    init_submodules
     deploy_dotfiles
-    build_mcp_servers
+    fetch_skills
+    fetch_mcps
 
     echo ""
     info "Running verification..."
@@ -206,7 +265,6 @@ main() {
         info "Next steps:"
         echo "  1. Open Neovim - plugins will auto-install via lazy.nvim"
         echo "  2. Run :checkhealth in Neovim to verify LSP setup"
-        echo "  3. Add MCP server: claude mcp add -s user --transport stdio shortcuts-mcp -- node ~/.claude/mcps/shortcuts-mcp/dist/server.js"
         echo ""
         info "Sourcing ~/.zshrc..."
         exec zsh
@@ -225,16 +283,19 @@ case "${1:-}" in
         echo "  --help, -h     Show this help message"
         echo "  --verify       Only run verification checks"
         echo "  --stow-only    Only deploy dotfiles (skip package installation)"
+        echo "  --fetch-only   Only fetch skills and MCPs from GitHub releases"
         echo ""
         ;;
     --verify)
         verify_installation
         ;;
     --stow-only)
-        init_submodules
         deploy_dotfiles
-        build_mcp_servers
         verify_installation
+        ;;
+    --fetch-only)
+        fetch_skills
+        fetch_mcps
         ;;
     *)
         main

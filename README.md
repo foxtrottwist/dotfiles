@@ -19,7 +19,7 @@ Personal configuration files managed with [GNU Stow](https://www.gnu.org/softwar
 Run the bootstrap script to install all dependencies and deploy configurations:
 
 ```bash
-git clone --recursive git@github.com:foxtrottwist/dotfiles.git ~/dotfiles
+git clone git@github.com:foxtrottwist/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./setup.sh
 ```
@@ -30,6 +30,7 @@ The script will:
 - Install Oh My Zsh (if not present)
 - Install Rust toolchain (if not present)
 - Deploy all configurations via stow
+- Fetch latest skills and MCP servers from GitHub releases
 
 ## Manual Setup
 
@@ -67,19 +68,18 @@ stow zsh
 
 ## Updating
 
-After pulling changes, update submodules and re-run stow:
+After pulling changes, re-run stow:
 
 ```bash
 cd ~/dotfiles
-git pull --recurse-submodules
-git submodule update --remote
+git pull
 stow -R claude ghostty mise nvim starship zellij zsh
 ```
 
-Or use the setup script:
+To fetch latest skills and MCP servers:
 
 ```bash
-./setup.sh --stow-only
+./setup.sh --fetch-only
 ```
 
 ## Verification
@@ -122,18 +122,19 @@ cd ~/dotfiles
 stow -D [package]  # Removes symlinks
 ```
 
-## MCP Servers
+## Skills and MCP Servers
 
-The `claude` package includes MCP servers as git submodules. After stowing, build them:
+The setup script fetches skills and MCP servers from GitHub releases:
+
+- **Skills**: Downloaded as `.skill` files and unpacked to `~/.claude/skills/`
+- **MCP Servers**: Downloaded as `.mcpb` files and unpacked to `~/.claude/mcps/`
+
+Skills without releases use embedded versions from the `claude` package.
+
+To update to latest releases:
 
 ```bash
-cd ~/.claude/mcps/shortcuts-mcp && npm install && npm run build
-```
-
-Then add to Claude Code:
-
-```bash
-claude mcp add -s user --transport stdio shortcuts-mcp -- node ~/.claude/mcps/shortcuts-mcp/dist/server.js
+./setup.sh --fetch-only
 ```
 
 ## Optional Tools
