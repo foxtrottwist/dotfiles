@@ -98,6 +98,29 @@ check_lm_studio() {
     fi
 }
 
+# Initialize git submodules
+init_submodules() {
+    info "Initializing git submodules..."
+    cd "$DOTFILES_DIR"
+    git submodule update --init --recursive
+    success "Submodules initialized"
+}
+
+# Build MCP servers
+build_mcp_servers() {
+    local mcp_dir="$HOME/.claude/mcps/shortcuts-mcp"
+
+    if [[ -d "$mcp_dir" ]] && [[ -f "$mcp_dir/package.json" ]]; then
+        info "Building shortcuts-mcp..."
+        cd "$mcp_dir"
+        npm install --silent
+        npm run build --silent
+        success "shortcuts-mcp built"
+    else
+        warn "shortcuts-mcp not found - run stow first"
+    fi
+}
+
 # Deploy dotfiles with stow
 deploy_dotfiles() {
     info "Deploying dotfiles with stow..."
@@ -133,6 +156,7 @@ verify_installation() {
 
     # Check symlinks
     local symlinks=(
+        "$HOME/.claude/mcps/shortcuts-mcp"
         "$HOME/.claude/settings.json"
         "$HOME/.claude/skills"
         "$HOME/.config/ghostty"
@@ -169,7 +193,9 @@ main() {
     install_oh_my_zsh
     install_rust
     check_lm_studio
+    init_submodules
     deploy_dotfiles
+    build_mcp_servers
 
     echo ""
     info "Running verification..."
@@ -180,6 +206,7 @@ main() {
         info "Next steps:"
         echo "  1. Open Neovim - plugins will auto-install via lazy.nvim"
         echo "  2. Run :checkhealth in Neovim to verify LSP setup"
+        echo "  3. Add MCP server: claude mcp add -s user --transport stdio shortcuts-mcp -- node ~/.claude/mcps/shortcuts-mcp/dist/server.js"
         echo ""
         info "Sourcing ~/.zshrc..."
         exec zsh
@@ -204,7 +231,9 @@ case "${1:-}" in
         verify_installation
         ;;
     --stow-only)
+        init_submodules
         deploy_dotfiles
+        build_mcp_servers
         verify_installation
         ;;
     *)
