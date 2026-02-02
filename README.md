@@ -19,7 +19,7 @@ Personal configuration files managed with [GNU Stow](https://www.gnu.org/softwar
 Run the bootstrap script to install all dependencies and deploy configurations:
 
 ```bash
-git clone git@github.com:foxtrottwist/dotfiles.git ~/dotfiles
+git clone --recursive git@github.com:foxtrottwist/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./setup.sh
 ```
@@ -67,11 +67,12 @@ stow zsh
 
 ## Updating
 
-After pulling changes, re-run stow to ensure symlinks are current:
+After pulling changes, update submodules and re-run stow:
 
 ```bash
 cd ~/dotfiles
-git pull
+git pull --recurse-submodules
+git submodule update --remote
 stow -R claude ghostty mise nvim starship zellij zsh
 ```
 
@@ -119,6 +120,20 @@ cd ~/dotfiles && stow [app]
 ```bash
 cd ~/dotfiles
 stow -D [package]  # Removes symlinks
+```
+
+## MCP Servers
+
+The `claude` package includes MCP servers as git submodules. After stowing, build them:
+
+```bash
+cd ~/.claude/mcps/shortcuts-mcp && npm install && npm run build
+```
+
+Then add to Claude Code:
+
+```bash
+claude mcp add -s user --transport stdio shortcuts-mcp -- node ~/.claude/mcps/shortcuts-mcp/dist/server.js
 ```
 
 ## Optional Tools
