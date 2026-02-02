@@ -145,6 +145,8 @@ fetch_skills() {
         local name=$(basename "$repo")
         local skill_file=$(download_release_asset "$repo" "*.skill" "$tmp_dir")
         if [[ -f "$skill_file" ]]; then
+            # Remove existing skill directory to avoid stow conflicts
+            rm -rf "${skills_dir:?}/$name" 2>/dev/null || true
             unzip -o -q "$skill_file" -d "$skills_dir"
             rm -f "$skill_file"
             success "Fetched skill: $name"
@@ -188,6 +190,13 @@ fetch_mcps() {
 deploy_dotfiles() {
     info "Deploying dotfiles with stow..."
     cd "$DOTFILES_DIR"
+
+    # Clean up real directories that would conflict with claude package symlinks
+    # (e.g., from previous --fetch-only runs)
+    if [[ -d "$HOME/.claude/skills" && ! -L "$HOME/.claude/skills" ]]; then
+        info "Cleaning up ~/.claude/skills for stow..."
+        rm -rf "$HOME/.claude/skills"
+    fi
 
     local packages=(claude ghostty mise nvim starship zellij zsh)
 
