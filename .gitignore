@@ -1,5 +1,5 @@
-# Claude Code local settings
-.claude/
+# Claude Code local settings (root only)
+/.claude/
 
 # Skill state/artifacts
 .code-audit/

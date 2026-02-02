@@ -1,0 +1,3 @@
+[submodule "claude/.claude/mcps/shortcuts-mcp"]
+	path = claude/.claude/mcps/shortcuts-mcp
+	url = https://github.com/foxtrottwist/shortcuts-mcp.git
