@@ -143,13 +143,16 @@ fetch_skills() {
 
     for repo in "${skills[@]}"; do
         local name=$(basename "$repo")
+        # Handle case-sensitive repo names (e.g., Iterative-work -> iterative-work)
+        local skill_name=$(echo "$name" | tr '[:upper:]' '[:lower:]')
         local skill_file=$(download_release_asset "$repo" "*.skill" "$tmp_dir")
         if [[ -f "$skill_file" ]]; then
             # Remove existing skill directory to avoid stow conflicts
-            rm -rf "${skills_dir:?}/$name" 2>/dev/null || true
-            unzip -o -q "$skill_file" -d "$skills_dir"
+            rm -rf "${skills_dir:?}/$skill_name" 2>/dev/null || true
+            mkdir -p "$skills_dir/$skill_name"
+            unzip -o -q "$skill_file" -d "$skills_dir/$skill_name"
             rm -f "$skill_file"
-            success "Fetched skill: $name"
+            success "Fetched skill: $skill_name"
         else
             warn "No release found: $name - using embedded if available"
         fi
