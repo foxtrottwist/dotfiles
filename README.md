@@ -4,13 +4,14 @@ Personal configuration files managed with [GNU Stow](https://www.gnu.org/softwar
 
 ## Packages
 
-| Package   | Description                                       |
-| --------- | ------------------------------------------------- |
-| `nvim`    | Neovim configuration                              |
-| `zsh`     | Zsh shell configuration (.zshrc, .zshenv, .zprofile) |
-| `zellij`  | Zellij terminal multiplexer                       |
-| `mise`    | Mise version manager                              |
-| `wezterm` | WezTerm terminal emulator                         |
+| Package    | Description                                          |
+| ---------- | ---------------------------------------------------- |
+| `nvim`     | Neovim configuration                                 |
+| `zsh`      | Zsh shell configuration (.zshrc, .zshenv, .zprofile) |
+| `zellij`   | Zellij terminal multiplexer                          |
+| `mise`     | Mise version manager                                 |
+| `ghostty`  | Ghostty terminal emulator                            |
+| `starship` | Cross-shell prompt                                   |
 
 ## Quick Start
 
@@ -24,7 +25,7 @@ cd ~/dotfiles
 
 The script will:
 - Install Homebrew (if not present)
-- Install required packages (stow, neovim, ripgrep, fd, zellij, mise, zsh, wezterm)
+- Install required packages via Brewfile (stow, neovim, ripgrep, fd, zellij, mise, zsh, starship, ghostty)
 - Install Oh My Zsh (if not present)
 - Install Rust toolchain (if not present)
 - Deploy all configurations via stow
@@ -36,11 +37,12 @@ If you prefer manual installation:
 ### Prerequisites
 
 ```bash
-# Core tools
-brew install stow neovim ripgrep fd zellij mise zsh
+# Install all packages via Brewfile
+brew bundle --file=Brewfile
 
-# WezTerm (macOS)
-brew install --cask wezterm
+# Or install individually:
+# brew install stow neovim ripgrep fd zellij mise zsh starship
+# brew install --cask ghostty
 
 # Oh My Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -55,7 +57,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 cd ~/dotfiles
 
 # Deploy all configurations
-stow nvim zsh zellij mise wezterm
+stow nvim zsh zellij mise ghostty starship
 
 # Or deploy individually
 stow nvim
@@ -69,7 +71,7 @@ After pulling changes, re-run stow to ensure symlinks are current:
 ```bash
 cd ~/dotfiles
 git pull
-stow -R nvim zsh zellij mise wezterm
+stow -R nvim zsh zellij mise ghostty starship
 ```
 
 Or use the setup script:
