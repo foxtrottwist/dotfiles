@@ -189,6 +189,21 @@ fetch_mcps() {
     rm -rf "$tmp_dir"
 }
 
+# Clean up files that interfere with stow
+cleanup() {
+    info "Cleaning up..."
+
+    # Remove .DS_Store files from dotfiles
+    find "$DOTFILES_DIR" -name ".DS_Store" -delete 2>/dev/null
+
+    # Remove .DS_Store from target locations
+    rm -f "$HOME/.DS_Store" 2>/dev/null
+    rm -f "$HOME/.claude/.DS_Store" 2>/dev/null
+    rm -f "$HOME/.config/.DS_Store" 2>/dev/null
+
+    success "Cleanup complete"
+}
+
 # Deploy dotfiles with stow
 deploy_dotfiles() {
     info "Deploying dotfiles with stow..."
@@ -259,6 +274,7 @@ main() {
     install_oh_my_zsh
     install_rust
     check_lm_studio
+    cleanup
     deploy_dotfiles
     fetch_skills
     fetch_mcps
@@ -287,6 +303,7 @@ case "${1:-}" in
         echo "Options:"
         echo "  --help, -h     Show this help message"
         echo "  --update       Pull latest, restow, and fetch skills/MCPs"
+        echo "  --cleanup      Remove .DS_Store and other interfering files"
         echo "  --verify       Only run verification checks"
         echo "  --stow-only    Only deploy dotfiles (skip package installation)"
         echo "  --fetch-only   Only fetch skills and MCPs from GitHub releases"
@@ -296,10 +313,14 @@ case "${1:-}" in
         info "Updating dotfiles..."
         cd "$DOTFILES_DIR"
         git pull
+        cleanup
         deploy_dotfiles
         fetch_skills
         fetch_mcps
         success "Update complete!"
+        ;;
+    --cleanup)
+        cleanup
         ;;
     --verify)
         verify_installation
