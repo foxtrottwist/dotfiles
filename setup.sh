@@ -172,7 +172,10 @@ fetch_mcps() {
 
         # Add to Claude Code if not already configured
         if command -v claude &>/dev/null; then
-            claude mcp add -s user --transport stdio shortcuts-mcp -- node "$mcp_dir/shortcuts-mcp/dist/server.js" 2>/dev/null || true
+            if ! grep -q "shortcuts-mcp" ~/.claude.json 2>/dev/null; then
+                claude mcp add -s user --transport stdio shortcuts-mcp -- node "$mcp_dir/shortcuts-mcp/dist/server.js" 2>/dev/null || true
+                success "Configured MCP: shortcuts-mcp"
+            fi
         fi
     else
         warn "No release found: shortcuts-mcp"
@@ -265,9 +268,7 @@ main() {
         info "Next steps:"
         echo "  1. Open Neovim - plugins will auto-install via lazy.nvim"
         echo "  2. Run :checkhealth in Neovim to verify LSP setup"
-        echo ""
-        info "Sourcing ~/.zshrc..."
-        exec zsh
+        echo "  3. Restart your shell or run: source ~/.zshrc"
     else
         echo ""
         warn "Setup completed with warnings - check output above"
@@ -281,10 +282,20 @@ case "${1:-}" in
         echo ""
         echo "Options:"
         echo "  --help, -h     Show this help message"
+        echo "  --update       Pull latest, restow, and fetch skills/MCPs"
         echo "  --verify       Only run verification checks"
         echo "  --stow-only    Only deploy dotfiles (skip package installation)"
         echo "  --fetch-only   Only fetch skills and MCPs from GitHub releases"
         echo ""
+        ;;
+    --update)
+        info "Updating dotfiles..."
+        cd "$DOTFILES_DIR"
+        git pull
+        deploy_dotfiles
+        fetch_skills
+        fetch_mcps
+        success "Update complete!"
         ;;
     --verify)
         verify_installation

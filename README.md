@@ -68,17 +68,18 @@ stow zsh
 
 ## Updating
 
-After pulling changes, re-run stow:
+Run the update command to pull latest, restow, and fetch skills/MCPs:
+
+```bash
+./setup.sh --update
+```
+
+Or manually:
 
 ```bash
 cd ~/dotfiles
 git pull
 stow -R claude ghostty mise nvim starship zellij zsh
-```
-
-To fetch latest skills and MCP servers:
-
-```bash
 ./setup.sh --fetch-only
 ```
 
