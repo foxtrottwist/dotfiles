@@ -18,6 +18,7 @@ $golang\
 $python\
 $swift\
 $cmd_duration\
+$container\
 $line_break\
 $character"""
 
@@ -63,3 +64,9 @@ format = "[$symbol$version](yellow) "
 [swift]
 symbol = " "
 format = "[$symbol$version](orange) "
+
+[container]
+symbol = " "
+format = "[$symbol$name]($style) "
+style = "dimmed blue"
+
