@@ -1,2 +1,16 @@
-# Audit state
+# Claude Code local settings
+.claude/
+
+# Skill state/artifacts
 .code-audit/
+.writing/
+
+claude/.claude/skills/job-apply/
+claude/.claude/skills/write/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc

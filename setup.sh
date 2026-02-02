@@ -103,7 +103,7 @@ deploy_dotfiles() {
     info "Deploying dotfiles with stow..."
     cd "$DOTFILES_DIR"
 
-    local packages=(nvim zsh zellij mise ghostty starship)
+    local packages=(claude ghostty mise nvim starship zellij zsh)
 
     for pkg in "${packages[@]}"; do
         if [[ -d "$pkg" ]]; then
@@ -133,11 +133,13 @@ verify_installation() {
 
     # Check symlinks
     local symlinks=(
-        "$HOME/.config/nvim"
-        "$HOME/.config/zellij"
-        "$HOME/.config/mise"
+        "$HOME/.claude/settings.json"
+        "$HOME/.claude/skills"
         "$HOME/.config/ghostty"
+        "$HOME/.config/mise"
+        "$HOME/.config/nvim"
         "$HOME/.config/starship.toml"
+        "$HOME/.config/zellij"
         "$HOME/.zshrc"
     )
 

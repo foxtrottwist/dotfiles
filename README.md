@@ -6,12 +6,13 @@ Personal configuration files managed with [GNU Stow](https://www.gnu.org/softwar
 
 | Package    | Description                                          |
 | ---------- | ---------------------------------------------------- |
-| `nvim`     | Neovim configuration                                 |
-| `zsh`      | Zsh shell configuration (.zshrc, .zshenv, .zprofile) |
-| `zellij`   | Zellij terminal multiplexer                          |
-| `mise`     | Mise version manager                                 |
+| `claude`   | Claude Code settings and skills                      |
 | `ghostty`  | Ghostty terminal emulator                            |
+| `mise`     | Mise version manager                                 |
+| `nvim`     | Neovim configuration                                 |
 | `starship` | Cross-shell prompt                                   |
+| `zellij`   | Zellij terminal multiplexer                          |
+| `zsh`      | Zsh shell configuration (.zshrc, .zshenv, .zprofile) |
 
 ## Quick Start
 
@@ -57,7 +58,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 cd ~/dotfiles
 
 # Deploy all configurations
-stow nvim zsh zellij mise ghostty starship
+stow claude ghostty mise nvim starship zellij zsh
 
 # Or deploy individually
 stow nvim
@@ -71,7 +72,7 @@ After pulling changes, re-run stow to ensure symlinks are current:
 ```bash
 cd ~/dotfiles
 git pull
-stow -R nvim zsh zellij mise ghostty starship
+stow -R claude ghostty mise nvim starship zellij zsh
 ```
 
 Or use the setup script:
