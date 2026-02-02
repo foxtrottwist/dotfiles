@@ -194,13 +194,6 @@ deploy_dotfiles() {
     info "Deploying dotfiles with stow..."
     cd "$DOTFILES_DIR"
 
-    # Clean up real directories that would conflict with claude package symlinks
-    # (e.g., from previous --fetch-only runs)
-    if [[ -d "$HOME/.claude/skills" && ! -L "$HOME/.claude/skills" ]]; then
-        info "Cleaning up ~/.claude/skills for stow..."
-        rm -rf "$HOME/.claude/skills"
-    fi
-
     local packages=(claude ghostty mise nvim starship zellij zsh)
 
     for pkg in "${packages[@]}"; do
@@ -229,10 +222,9 @@ verify_installation() {
         fi
     done
 
-    # Check symlinks
+    # Check symlinks (skills not included - populated by fetch)
     local symlinks=(
         "$HOME/.claude/settings.json"
-        "$HOME/.claude/skills"
         "$HOME/.config/ghostty"
         "$HOME/.config/mise"
         "$HOME/.config/nvim"

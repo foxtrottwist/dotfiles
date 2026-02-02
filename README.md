@@ -6,7 +6,7 @@ Personal configuration files managed with [GNU Stow](https://www.gnu.org/softwar
 
 | Package    | Description                                          |
 | ---------- | ---------------------------------------------------- |
-| `claude`   | Claude Code settings and skills                      |
+| `claude`   | Claude Code settings (skills fetched separately)     |
 | `ghostty`  | Ghostty terminal emulator                            |
 | `mise`     | Mise version manager                                 |
 | `nvim`     | Neovim configuration                                 |
