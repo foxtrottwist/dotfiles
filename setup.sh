@@ -126,8 +126,7 @@ fetch_skills() {
     info "Fetching skills from GitHub releases..."
 
     local skills=(
-        "foxtrottwist/iterative-development"
-        "foxtrottwist/Iterative-work"
+        "foxtrottwist/iterative"
         "foxtrottwist/code-audit"
         "foxtrottwist/chat-migration"
         "foxtrottwist/dotfiles-skill"
@@ -142,7 +141,7 @@ fetch_skills() {
 
     for repo in "${skills[@]}"; do
         local name=$(basename "$repo")
-        # Handle case-sensitive repo names (e.g., Iterative-work -> iterative-work)
+        # Normalize skill names to lowercase
         local skill_name=$(echo "$name" | tr '[:upper:]' '[:lower:]')
         local skill_file=$(download_release_asset "$repo" "*.skill" "$tmp_dir")
         if [[ -f "$skill_file" ]]; then
