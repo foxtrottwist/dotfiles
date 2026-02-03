@@ -133,7 +133,6 @@ fetch_skills() {
         "foxtrottwist/dotfiles-skill"
         "foxtrottwist/prompt-dev"
         "foxtrottwist/submodule-sync"
-        "foxtrottwist/job-apply"
         "foxtrottwist/write"
     )
 
