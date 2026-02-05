@@ -125,8 +125,9 @@ download_release_asset() {
 fetch_skills() {
     info "Fetching skills from GitHub releases..."
 
+    # Format: "owner/repo" or "name=owner/repo" when directory name differs from repo
     local skills=(
-        "foxtrottwist/iterative"
+        "iter=foxtrottwist/iterative"
         "foxtrottwist/code-audit"
         "foxtrottwist/chat-migration"
         "foxtrottwist/dotfiles-skill"
@@ -139,10 +140,15 @@ fetch_skills() {
     local skills_dir="$HOME/.claude/skills"
     mkdir -p "$skills_dir"
 
-    for repo in "${skills[@]}"; do
-        local name=$(basename "$repo")
-        # Normalize skill names to lowercase
-        local skill_name=$(echo "$name" | tr '[:upper:]' '[:lower:]')
+    for entry in "${skills[@]}"; do
+        local repo skill_name
+        if [[ "$entry" == *"="* ]]; then
+            skill_name="${entry%%=*}"
+            repo="${entry#*=}"
+        else
+            repo="$entry"
+            skill_name=$(basename "$repo" | tr '[:upper:]' '[:lower:]')
+        fi
         local skill_file=$(download_release_asset "$repo" "*.skill" "$tmp_dir")
         if [[ -f "$skill_file" ]]; then
             # Remove existing skill directory to avoid stow conflicts
@@ -152,7 +158,7 @@ fetch_skills() {
             rm -f "$skill_file"
             success "Fetched skill: $skill_name"
         else
-            warn "No release found: $name - using embedded if available"
+            warn "No release found: $skill_name - using embedded if available"
         fi
     done
 
