@@ -8,9 +8,6 @@
 .code-audit/
 .writing/
 
-claude/.claude/skills/job-apply/
-claude/.claude/skills/write/
-
 # macOS
 .DS_Store
 

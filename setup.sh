@@ -127,13 +127,8 @@ fetch_skills() {
 
     # Format: "owner/repo" or "name=owner/repo" when directory name differs from repo
     local skills=(
-        "iter=foxtrottwist/iterative"
-        "foxtrottwist/code-audit"
-        "foxtrottwist/chat-migration"
         "foxtrottwist/dotfiles-skill"
-        "foxtrottwist/prompt-dev"
         "foxtrottwist/submodule-sync"
-        "foxtrottwist/write"
     )
 
     local tmp_dir=$(mktemp -d)
@@ -161,34 +156,6 @@ fetch_skills() {
             warn "No release found: $skill_name - using embedded if available"
         fi
     done
-
-    rm -rf "$tmp_dir"
-}
-
-# Fetch MCP servers from GitHub releases
-fetch_mcps() {
-    info "Fetching MCP servers from GitHub releases..."
-
-    local tmp_dir=$(mktemp -d)
-    local mcp_dir="$HOME/.claude/mcps"
-    mkdir -p "$mcp_dir"
-
-    # shortcuts-mcp
-    local mcpb_file=$(download_release_asset "foxtrottwist/shortcuts-mcp" "*.mcpb" "$tmp_dir")
-    if [[ -f "$mcpb_file" ]]; then
-        unzip -o -q "$mcpb_file" -d "$mcp_dir/shortcuts-mcp"
-        success "Fetched MCP: shortcuts-mcp"
-
-        # Add to Claude Code if not already configured
-        if command -v claude &>/dev/null; then
-            if ! grep -q "shortcuts-mcp" ~/.claude.json 2>/dev/null; then
-                claude mcp add -s user --transport stdio shortcuts-mcp -- node "$mcp_dir/shortcuts-mcp/dist/server.js" 2>/dev/null || true
-                success "Configured MCP: shortcuts-mcp"
-            fi
-        fi
-    else
-        warn "No release found: shortcuts-mcp"
-    fi
 
     rm -rf "$tmp_dir"
 }
@@ -281,7 +248,6 @@ main() {
     cleanup
     deploy_dotfiles
     fetch_skills
-    fetch_mcps
 
     echo ""
     info "Running verification..."
@@ -306,11 +272,11 @@ case "${1:-}" in
         echo ""
         echo "Options:"
         echo "  --help, -h     Show this help message"
-        echo "  --update       Pull latest, restow, and fetch skills/MCPs"
+        echo "  --update       Pull latest, restow, and fetch skills"
         echo "  --cleanup      Remove .DS_Store and other interfering files"
         echo "  --verify       Only run verification checks"
         echo "  --stow-only    Only deploy dotfiles (skip package installation)"
-        echo "  --fetch-only   Only fetch skills and MCPs from GitHub releases"
+        echo "  --fetch-only   Only fetch skills from GitHub releases"
         echo ""
         ;;
     --update)
@@ -320,7 +286,6 @@ case "${1:-}" in
         cleanup
         deploy_dotfiles
         fetch_skills
-        fetch_mcps
         success "Update complete!"
         ;;
     --cleanup)
@@ -335,7 +300,6 @@ case "${1:-}" in
         ;;
     --fetch-only)
         fetch_skills
-        fetch_mcps
         ;;
     *)
         main

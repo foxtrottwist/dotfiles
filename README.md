@@ -30,7 +30,7 @@ The script will:
 - Install Oh My Zsh (if not present)
 - Install Rust toolchain (if not present)
 - Deploy all configurations via stow
-- Fetch latest skills and MCP servers from GitHub releases
+- Fetch latest standalone skills from GitHub releases
 
 ## Manual Setup
 
@@ -68,7 +68,7 @@ stow zsh
 
 ## Updating
 
-Run the update command to pull latest, restow, and fetch skills/MCPs:
+Run the update command to pull latest, restow, and fetch skills:
 
 ```bash
 ./setup.sh --update
@@ -123,16 +123,16 @@ cd ~/dotfiles
 stow -D [package]  # Removes symlinks
 ```
 
-## Skills and MCP Servers
+## Skills
 
-The setup script fetches skills and MCP servers from GitHub releases:
+Most skills (iter, write, prompt-dev, chat-migration, code-audit) and the shortcuts-mcp server are bundled in the `workflow-tools` Claude Code plugin. The setup script fetches the two standalone skills from GitHub releases:
 
-- **Skills**: Downloaded as `.skill` files and unpacked to `~/.claude/skills/`
-- **MCP Servers**: Downloaded as `.mcpb` files and unpacked to `~/.claude/mcps/`
+- **dotfiles-skill** — Manages this dotfiles repo from Claude Code
+- **submodule-sync** — Git submodule workflow automation
 
-Skills without releases use embedded versions from the `claude` package.
+Downloaded as `.skill` files and unpacked to `~/.claude/skills/`.
 
-To update to latest releases:
+To update standalone skills to latest releases:
 
 ```bash
 ./setup.sh --fetch-only
