@@ -62,9 +62,8 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 
 ## File Conventions
 
-- **No documentation files** unless explicitly requested — no READMEs, changelogs, or markdown docs
-- **Local/scratch files** use `*.local` or `*.local.*` extensions (e.g., `notes.local`, `todo.local.md`) — these are gitignored
-- **No tracking files** (TODO.md, CHANGELOG.md, etc.) unless asked — use `*.local` variants for personal tracking
+- When creating scratch files, notes, or tracking artifacts in a repo, prefer `*.local` or `*.local.*` extensions (e.g., `notes.local`, `plan.local.md`) — these are gitignored across projects
+- This does not replace built-in task tracking — use whichever fits the situation
 
 ## Constraints
 
