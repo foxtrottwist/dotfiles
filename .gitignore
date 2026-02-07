@@ -1,6 +1,9 @@
 # Claude Code local settings (root only)
 /.claude/
 
+# Build artifacts
+*.skill
+
 # Skill state/artifacts
 .code-audit/
 .writing/
@@ -14,3 +17,7 @@ claude/.claude/skills/write/
 # Python
 __pycache__/
 *.pyc
+
+# Local/scratch files
+*.local
+*.local.*
