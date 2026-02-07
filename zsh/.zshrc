@@ -179,3 +179,8 @@ if command -v zellij &>/dev/null; then
         exec zsh
     }
 fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/lawhorne/.lmstudio/bin"
+# End of LM Studio CLI section
+
