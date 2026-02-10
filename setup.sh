@@ -89,7 +89,20 @@ install_rust() {
     success "Rust toolchain installed"
 }
 
-# Install global npm packages
+# Activate mise and install configured tool versions
+activate_mise() {
+    if ! command -v mise &>/dev/null; then
+        warn "mise not found - skipping runtime activation"
+        return 1
+    fi
+
+    info "Activating mise and installing tool versions..."
+    eval "$(mise activate bash)"
+    mise install --yes
+    success "mise tools installed and activated"
+}
+
+# Install global npm packages (requires mise activation)
 install_npm_packages() {
     if ! command -v npm &>/dev/null; then
         warn "npm not found - skipping global package installs"
@@ -263,6 +276,7 @@ main() {
     install_brew_packages
     install_oh_my_zsh
     install_rust
+    activate_mise
     install_npm_packages
     check_lm_studio
     cleanup
@@ -304,6 +318,9 @@ case "${1:-}" in
         cd "$DOTFILES_DIR"
         git pull
         cleanup
+        install_brew_packages
+        activate_mise
+        install_npm_packages
         deploy_dotfiles
         fetch_skills
         success "Update complete!"
