@@ -7,41 +7,42 @@ return {
       "windwp/nvim-ts-autotag",
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
+    opts = {
+      highlight = { enable = true },
+      indent = { enable = true },
+      ensure_installed = {
+        "bash",
+        "css",
+        "dockerfile",
+        "html",
+        "gitignore",
+        "go",
+        "graphql",
+        "json",
+        "javascript",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "prisma",
+        "regex",
+        "svelte",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
+      },
+      auto_install = true,
+    },
+    config = function(_, opts)
+      require("nvim-treesitter.configs").setup(opts)
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("nvim-treesitter.configs").setup({
-        -- enable syntax highlighting
-        highlight = {
-          enable = true,
-        },
-        -- enable indentation
-        indent = { enable = true },
-        -- enable autotagging (w/ nvim-ts-autotag plugin)
-        autotag = { enable = true },
-        -- ensure these language parsers are installed
-        ensure_installed = {
-          "bash",
-          "css",
-          "dockerfile",
-          "html",
-          "gitignore",
-          "go",
-          "graphql",
-          "json",
-          "javascript",
-          "lua",
-          "markdown",
-          "markdown_inline",
-          "prisma",
-          "regex",
-          "svelte",
-          "tsx",
-          "typescript",
-          "vim",
-          "yaml",
-        },
-        -- auto install above language parsers
-        auto_install = true,
-        -- textobjects configuration
         textobjects = {
           select = {
             enable = true,
@@ -75,7 +76,11 @@ return {
           },
         },
       })
-
     end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {},
   },
 }
