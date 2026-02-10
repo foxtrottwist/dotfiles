@@ -89,6 +89,25 @@ install_rust() {
     success "Rust toolchain installed"
 }
 
+# Install global npm packages
+install_npm_packages() {
+    if ! command -v npm &>/dev/null; then
+        warn "npm not found - skipping global package installs"
+        return
+    fi
+
+    local packages=("@playwright/cli")
+    for pkg in "${packages[@]}"; do
+        if npm list -g "$pkg" &>/dev/null; then
+            success "npm: $pkg already installed"
+        else
+            info "Installing npm package: $pkg"
+            npm install -g "$pkg"
+            success "npm: $pkg installed"
+        fi
+    done
+}
+
 # Install LM Studio CLI (optional, requires manual download of app first)
 check_lm_studio() {
     if [[ -d "$HOME/.lmstudio" ]]; then
@@ -244,6 +263,7 @@ main() {
     install_brew_packages
     install_oh_my_zsh
     install_rust
+    install_npm_packages
     check_lm_studio
     cleanup
     deploy_dotfiles
