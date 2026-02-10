@@ -68,7 +68,8 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 ## Playwright CLI
 
 - Always use `--browser=chromium` when opening browser sessions
-- After taking a screenshot, display it in the terminal with `chafa <file>` so the user can see it too
+- Do NOT use terminal image tools (`chafa`, `viu`, etc.) inside CC — they freeze or dump escape codes since the TUI can't pass through image protocols
+- After screenshots or image generation, open a floating Zellij pane with `viu`: `zellij run --floating -- viu <file>`
 
 ## Constraints
 

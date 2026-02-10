@@ -10,7 +10,7 @@ brew "zellij"         # Terminal multiplexer
 brew "mise"           # Runtime version manager
 brew "zsh"            # Shell
 brew "starship"       # Cross-shell prompt
-brew "chafa"          # Terminal image viewer
+brew "viu"            # Terminal image viewer
 
 # macOS Applications (casks)
 cask "ghostty"        # Terminal emulator
