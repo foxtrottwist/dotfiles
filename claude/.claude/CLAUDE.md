@@ -65,6 +65,11 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 - When creating scratch files, notes, or tracking artifacts in a repo, prefer `*.local` or `*.local.*` extensions (e.g., `notes.local`, `plan.local.md`) — these are gitignored across projects
 - This does not replace built-in task tracking — use whichever fits the situation
 
+## Playwright CLI
+
+- Always use `--browser=chromium` when opening browser sessions
+- After taking a screenshot, display it in the terminal with `chafa <file>` so the user can see it too
+
 ## Constraints
 
 - Only take actions when confident of the outcome
