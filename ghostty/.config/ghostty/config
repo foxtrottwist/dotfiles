@@ -104,3 +104,10 @@ keybind = shift+enter=text:\n
 
 # Quit app
 keybind = cmd+q=quit
+
+# Quick Terminal
+keybind = global:ctrl+alt+shift+cmd+grave_accent=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-screen = main
+quick-terminal-animation-duration = 0.2
+quick-terminal-autohide = true
