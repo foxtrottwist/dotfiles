@@ -168,8 +168,9 @@ fi
 # Zellij - Terminal Multiplexer
 # ============================================================
 # Auto-attach to "main" session if not already in Zellij
+# Skip in Ghostty quick terminal to avoid shared session resize issues
 if command -v zellij &>/dev/null; then
-    if [[ -z "$ZELLIJ" && -z "$ZELLIJ_SESSION_NAME" ]]; then
+    if [[ -z "$ZELLIJ" && -z "$ZELLIJ_SESSION_NAME" && -z "$GHOSTTY_QUICK_TERMINAL" ]]; then
         zellij attach -c main
     fi
 
