@@ -65,6 +65,11 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 - When creating scratch files, notes, or tracking artifacts in a repo, prefer `*.local` or `*.local.*` extensions (e.g., `notes.local`, `plan.local.md`) — these are gitignored across projects
 - This does not replace built-in task tracking — use whichever fits the situation
 
+## Agent Teams
+
+- Terminal multiplexer is Zellij, not tmux — use `in-process` teammate mode until Zellij is supported as a split-pane backend
+- When Zellij split-pane support is available, prefer `"teammateMode": "zellij"` (or equivalent)
+
 ## Playwright CLI
 
 - Always use `--browser=chromium` when opening browser sessions

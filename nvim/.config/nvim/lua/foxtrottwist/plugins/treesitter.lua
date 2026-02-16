@@ -1,16 +1,11 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    event = { "BufReadPre", "BufNewFile" },
+    branch = "main",
+    lazy = false,
     build = ":TSUpdate",
-    dependencies = {
-      "windwp/nvim-ts-autotag",
-      "nvim-treesitter/nvim-treesitter-textobjects",
-    },
-    opts = {
-      highlight = { enable = true },
-      indent = { enable = true },
-      ensure_installed = {
+    config = function()
+      require("nvim-treesitter").install({
         "bash",
         "css",
         "dockerfile",
@@ -30,52 +25,68 @@ return {
         "typescript",
         "vim",
         "yaml",
-      },
-      auto_install = true,
-    },
-    config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
+      })
+
+      -- Auto-install parsers for new filetypes
+      vim.api.nvim_create_autocmd("FileType", {
+        desc = "Auto-install treesitter parsers",
+        callback = function(args)
+          local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+          if lang and not pcall(vim.treesitter.language.inspect, lang) then
+            require("nvim-treesitter").install({ lang })
+          end
+        end,
+      })
     end,
   },
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require("nvim-treesitter.configs").setup({
-        textobjects = {
-          select = {
-            enable = true,
-            lookahead = true,
-            keymaps = {
-              ["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment region" },
-              ["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment region" },
-              ["a:"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/field region" },
-              ["i:"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/field region" },
-              ["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional region" },
-              ["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional region" },
-              ["al"] = { query = "@loop.outer", desc = "Select outer part of a loop region" },
-              ["il"] = { query = "@loop.inner", desc = "Select inner part of a loop region" },
-              ["ab"] = { query = "@block.outer", desc = "Select outer part of a block region" },
-              ["ib"] = { query = "@block.inner", desc = "Select inner part of a block region" },
-              ["af"] = { query = "@function.outer", desc = "Select outer part of a function region" },
-              ["if"] = { query = "@function.inner", desc = "Select inner part of a function region" },
-              ["ac"] = { query = "@class.outer", desc = "Select outer part of a class region" },
-              ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-            },
-            include_surrounding_whitespace = true,
-          },
-          swap = {
-            enable = true,
-            swap_next = {
-              ["<leader>on"] = "@parameter.inner",
-            },
-            swap_previous = {
-              ["<leader>op"] = "@parameter.inner",
-            },
-          },
+      require("nvim-treesitter-textobjects").setup({
+        select = {
+          lookahead = true,
+          include_surrounding_whitespace = true,
         },
       })
+
+      local function select_textobject(query)
+        return function()
+          require("nvim-treesitter-textobjects.select").select_textobject(query, "textobjects")
+        end
+      end
+
+      local mappings = {
+        { "a=", "@assignment.outer", "Select outer assignment" },
+        { "i=", "@assignment.inner", "Select inner assignment" },
+        { "a:", "@parameter.outer", "Select outer parameter" },
+        { "i:", "@parameter.inner", "Select inner parameter" },
+        { "ai", "@conditional.outer", "Select outer conditional" },
+        { "ii", "@conditional.inner", "Select inner conditional" },
+        { "al", "@loop.outer", "Select outer loop" },
+        { "il", "@loop.inner", "Select inner loop" },
+        { "ab", "@block.outer", "Select outer block" },
+        { "ib", "@block.inner", "Select inner block" },
+        { "af", "@function.outer", "Select outer function" },
+        { "if", "@function.inner", "Select inner function" },
+        { "ac", "@class.outer", "Select outer class" },
+        { "ic", "@class.inner", "Select inner class" },
+      }
+
+      for _, map in ipairs(mappings) do
+        vim.keymap.set({ "x", "o" }, map[1], select_textobject(map[2]), { desc = map[3] })
+      end
+
+      -- Swap keymaps
+      vim.keymap.set("n", "<leader>on", function()
+        require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner")
+      end, { desc = "Swap next parameter" })
+
+      vim.keymap.set("n", "<leader>op", function()
+        require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.inner")
+      end, { desc = "Swap previous parameter" })
     end,
   },
   {
