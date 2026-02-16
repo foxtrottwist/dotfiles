@@ -69,6 +69,7 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 
 - Terminal multiplexer is Zellij, not tmux — use `in-process` teammate mode until Zellij is supported as a split-pane backend
 - When Zellij split-pane support is available, prefer `"teammateMode": "zellij"` (or equivalent)
+- After spawning a team, press **Shift+Tab** to enable delegate mode — restricts the lead to coordination-only (spawn, message, task management) and prevents it from implementing directly
 
 ## Playwright CLI
 
