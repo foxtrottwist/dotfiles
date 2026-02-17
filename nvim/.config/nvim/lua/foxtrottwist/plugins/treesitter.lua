@@ -5,7 +5,7 @@ return {
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter").install({
+      local wanted = {
         "bash",
         "css",
         "dockerfile",
@@ -25,7 +25,15 @@ return {
         "typescript",
         "vim",
         "yaml",
-      })
+      }
+
+      local missing = vim.tbl_filter(function(lang)
+        return not pcall(vim.treesitter.language.inspect, lang)
+      end, wanted)
+
+      if #missing > 0 then
+        require("nvim-treesitter").install(missing)
+      end
 
       -- Auto-install parsers for new filetypes
       vim.api.nvim_create_autocmd("FileType", {
