@@ -34,17 +34,6 @@ return {
       if #missing > 0 then
         require("nvim-treesitter").install(missing)
       end
-
-      -- Auto-install parsers for new filetypes
-      vim.api.nvim_create_autocmd("FileType", {
-        desc = "Auto-install treesitter parsers",
-        callback = function(args)
-          local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
-          if lang and not pcall(vim.treesitter.language.inspect, lang) then
-            require("nvim-treesitter").install({ lang })
-          end
-        end,
-      })
     end,
   },
   {
