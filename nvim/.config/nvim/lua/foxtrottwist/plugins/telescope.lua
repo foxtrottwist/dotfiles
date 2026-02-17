@@ -1,12 +1,11 @@
 return {
 	"nvim-telescope/telescope.nvim",
-	branch = "0.1.x",
+	branch = "master",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		"nvim-telescope/telescope-ui-select.nvim",
 		"nvim-tree/nvim-web-devicons",
-		"ThePrimeagen/harpoon",
 	},
 	config = function()
 		-- import telescope plugin safely
@@ -47,8 +46,6 @@ return {
 
 		telescope.load_extension("fzf")
 		telescope.load_extension("ui-select")
-		telescope.load_extension("harpoon")
-
 		local keymap = vim.keymap
 
 		keymap.set("n", "<leader>fd", "<cmd>Telescope diagnostics<cr>")
@@ -58,7 +55,6 @@ return {
 		keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" }) -- find string in current working directory as you type
 		keymap.set("n", "<leader>fw", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" }) -- find string under cursor in current working directory
 		keymap.set("n", "<leader>p", "<cmd>Telescope buffers<cr>", { desc = "[ ] Find existing buffers" }) -- list open buffers in current neovim instance
-		keymap.set("n", "<leader>hf", "<cmd>Telescope harpoon marks<cr>", { desc = "Show harpoon marks" }) -- show harpoon marks
 		keymap.set("n", "<leader>/", function()
 			-- You can pass additional configuration to telescope to change theme, layout, etc.
 			require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
