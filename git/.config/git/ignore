@@ -7,6 +7,11 @@ Icon?
 .Spotlight-V100
 .Trashes
 
+# Xcode
+xcuserdata/
+*.xcscmblueprint
+xcschememanagement.plist
+
 # Editors
 *.swp
 *.swo
