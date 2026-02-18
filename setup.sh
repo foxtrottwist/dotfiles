@@ -212,7 +212,7 @@ deploy_dotfiles() {
     info "Deploying dotfiles with stow..."
     cd "$DOTFILES_DIR"
 
-    local packages=(claude ghostty mise nvim starship zellij zsh)
+    local packages=(claude git ghostty mise nvim starship zellij zsh)
 
     for pkg in "${packages[@]}"; do
         if [[ -d "$pkg" ]]; then

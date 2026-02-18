@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Editors
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Local scratch files
+*.local
+*.local.*
+
+# Compiled & build output
+*.o
+*.so
+*.dylib
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Claude Code
+.claude/
+**/.claude/settings.local.json
+*.skill
+
+# Misc
+Thumbs.db
