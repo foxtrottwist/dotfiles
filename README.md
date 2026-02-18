@@ -7,6 +7,7 @@ Personal configuration files managed with [GNU Stow](https://www.gnu.org/softwar
 | Package    | Description                                          |
 | ---------- | ---------------------------------------------------- |
 | `claude`   | Claude Code settings (skills fetched separately)     |
+| `git`      | Global git config and gitignore (XDG-based)          |
 | `ghostty`  | Ghostty terminal emulator                            |
 | `mise`     | Mise version manager                                 |
 | `nvim`     | Neovim configuration                                 |
@@ -59,7 +60,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 cd ~/dotfiles
 
 # Deploy all configurations
-stow claude ghostty mise nvim starship zellij zsh
+stow claude git ghostty mise nvim starship zellij zsh
 
 # Or deploy individually
 stow nvim
@@ -79,7 +80,7 @@ Or manually:
 ```bash
 cd ~/dotfiles
 git pull
-stow -R claude ghostty mise nvim starship zellij zsh
+stow -R claude git ghostty mise nvim starship zellij zsh
 ./setup.sh --fetch-only
 ```
 
@@ -136,6 +137,23 @@ To update standalone skills to latest releases:
 
 ```bash
 ./setup.sh --fetch-only
+```
+
+## Git Package
+
+The `git` package stows a global git config and gitignore to `~/.config/git/` (the XDG default path). Shared settings like `pull.rebase`, `push.autoSetupRemote`, and `rerere` are tracked in the repo. Machine-specific settings (name, email) live in a local file that isn't stowed.
+
+After stowing, create your local config:
+
+```bash
+git config --file ~/.config/git/config.local user.name "Your Name"
+git config --file ~/.config/git/config.local user.email "you@example.com"
+```
+
+If you already have a `~/.gitconfig`, remove it so git uses the XDG path:
+
+```bash
+rm ~/.gitconfig
 ```
 
 ## Optional Tools
