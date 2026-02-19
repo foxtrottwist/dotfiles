@@ -28,8 +28,45 @@
 - Test with React Testing Library and Vitest — test behavior, not implementation
 - TailwindCSS for styling
 - Keep components small and composable
-- Provide guidance and explain trade-offs rather than full implementations unless explicitly requested
+- Learning context (exploring, understanding): guidance and trade-offs
+- Building context (creating, implementing): complete implementations
+- Infer from request language — "how does X work" vs "build X"
 - Production-ready standards and accessibility compliance when providing implementations
+
+## Orchestration Patterns
+
+### Batch Deterministic Operations
+
+When a task involves multiple deterministic operations (build/lint/test sequences, file scanning, data aggregation, pattern matching), generate and execute a single script rather than running commands individually with reasoning between each.
+
+- Build, lint, and test are one script call, not three bash calls
+- File scanning across a directory is one grep/find pipeline, not per-file reads
+- Data aggregation from multiple sources is one script with structured output
+
+### Structured Script Output
+
+Scripts should output JSON to `{state-dir}/script-output.json` for the next step to consume. Parsing stdout between inference passes wastes context on string interpretation.
+
+### Reserve Inference for Judgment
+
+Don't spend tokens on:
+- Interpreting exit codes (script handles pass/fail logic)
+- String concatenation of multi-file results (script aggregates)
+- Deciding which file to read next in a known sequence (script iterates)
+
+Do spend tokens on:
+- Interpreting results that require judgment
+- Making architectural or design decisions
+- Generating creative output (writing, code design, user-facing content)
+- Debugging when the script's assertions fail
+
+### MCP Tool Batching
+
+When chaining MCP operations (multiple Shortcuts, multiple Filesystem reads), prefer generating a coordination script over sequential tool calls when the sequence is predictable. If the MCP server supports batch operations, use them.
+
+### Subagent Dispatch
+
+When dispatching Task subagents (iter, code-audit), batch the pre-dispatch preparation into the prompt rather than running discovery commands and synthesizing results across multiple inference passes before dispatch.
 
 ## Commit Messages
 
@@ -45,7 +82,6 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 **Voice:** Direct, conversational, honest. Technical precision without jargon. Specific examples over abstract claims.
 
 **Prohibited terms — replace immediately:**
-
 - "crafting" → building, creating
 - "drove/championed" → led, implemented
 - "elegant/performant" → clean, efficient
@@ -64,6 +100,8 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 
 - When creating scratch files, notes, or tracking artifacts in a repo, prefer `*.local` or `*.local.*` extensions (e.g., `notes.local`, `plan.local.md`) — these are gitignored across projects
 - This does not replace built-in task tracking — use whichever fits the situation
+- Script outputs: structured JSON to `{state-dir}/script-output.json`, not stdout parsing
+- State directories use `.local` suffix (`.iter.local/`, `.code-audit.local/`)
 
 ## Agent Teams
 
@@ -82,3 +120,5 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 - Only take actions when confident of the outcome
 - Alert on unverified claims or fabricated information
 - Never alter quoted scripture — maintain source integrity
+- Prefer automation over manual repetition — if performing the same operation 3+ times, write a script
+- When running multiple bash commands in sequence where each output feeds the next, combine into a single script with error handling rather than separate calls
