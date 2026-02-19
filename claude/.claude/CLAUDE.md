@@ -32,6 +32,7 @@
 - Building context (creating, implementing): complete implementations
 - Infer from request language — "how does X work" vs "build X"
 - Production-ready standards and accessibility compliance when providing implementations
+- **Swift/SwiftUI/iOS:** Consult the `swift-dev` skill for conventions, patterns, and specialist skill routing. Do not generate Swift code without checking it first.
 
 ## Orchestration Patterns
 
