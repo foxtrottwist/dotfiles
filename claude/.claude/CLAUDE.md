@@ -104,6 +104,30 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 - Script outputs: structured JSON to `{state-dir}/script-output.json`, not stdout parsing
 - State directories use `.local` suffix (`.iter.local/`, `.code-audit.local/`)
 
+## Skill Design
+
+### Description Conventions
+
+- Descriptions focus on triggering conditions ("Use when..."), not workflow summaries
+- Workflow summaries cause Claude to shortcut the description instead of reading the full SKILL.md body
+- Good: "Use when users want to create a new skill or update an existing skill that extends Claude's capabilities"
+- Bad: "A comprehensive workflow for skill creation including template scaffolding, testing, and deployment"
+
+### Skill Types
+
+- **Discipline** — enforces a practice (TDD, code audit). Test with pressure scenarios that tempt shortcuts.
+- **Technique** — teaches a method (sharpen, prompt-dev). Test with application scenarios across domains.
+- **Pattern** — provides reusable structure (iter, chat-migration). Test with recognition scenarios at boundaries.
+- **Reference** — supplies knowledge (axiom-*, swift-conventions). Test with retrieval scenarios for accuracy.
+
+### Context Discipline
+
+- The context window is a shared resource — only add what Claude doesn't already know
+- Match degrees of freedom to task fragility:
+  - **High** (prose/text) — creative or judgment-heavy tasks
+  - **Medium** (pseudocode) — structured but adaptable tasks
+  - **Low** (scripts) — brittle or deterministic tasks
+
 ## Agent Teams
 
 - Terminal multiplexer is Zellij, not tmux — use `in-process` teammate mode until Zellij is supported as a split-pane backend
