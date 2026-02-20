@@ -167,6 +167,11 @@ fi
 # ============================================================
 # Zellij - Terminal Multiplexer
 # ============================================================
+# Polyfill GHOSTTY_QUICK_TERMINAL for Ghostty <1.3.0 (native support ships in 1.3.0)
+if [[ "$TERM_PROGRAM" == "ghostty" && -z "$GHOSTTY_QUICK_TERMINAL" && $LINES -le 25 ]]; then
+    export GHOSTTY_QUICK_TERMINAL=1
+fi
+
 # Auto-attach to "main" session if not already in Zellij
 # Skip in Ghostty quick terminal to avoid shared session resize issues
 if command -v zellij &>/dev/null; then
