@@ -9,3 +9,6 @@ export TERM="${TERM:-xterm-256color}"
 
 # Cargo/Rust toolchain (optional)
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+
+# Machine-local overrides (not tracked in dotfiles)
+[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local

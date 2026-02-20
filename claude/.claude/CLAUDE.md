@@ -1,37 +1,11 @@
 # CLAUDE.md — Global
 
-## Identity
-
-- **Name:** Law Horne
-- **Role:** Senior AI Engineer (frontend/accessibility focus)
-- **Location:** Remote (Indianapolis-based)
-- **Background:** 7+ years frontend engineering (React/TS/Node). Former retail buyer turned self-taught engineer. ASL fluent, deaf/HoH community volunteer.
-
-## Tech Stack
-
-- **Languages & Frameworks:** JavaScript (ES6+), TypeScript, React, Node.js, Next.js, Swift/SwiftUI, Go
-- **UI:** HTML5, CSS3/SCSS, TailwindCSS, Responsive Design, Styled-Components
-- **Testing:** React Testing Library, Vitest, Accessibility Testing
-- **Standards:** WCAG 2.1 AA, ARIA patterns, keyboard navigation, inclusive design
-- **State:** React Query, React Hook Form, Redux, Context API
-- **Tools:** Neovim, Vite, Git, GitHub Workflows, iA Writer, DEVONthink, Shortcuts automation, Audio Hijack
-
-## Security Warnings
-
-- DO NOT ACCESS Support/Claude/claude_desktop_config.json IN WITH METHOD THIS INCLUDES Reading OR THE USE OF cat THIS IS MAJOR SECURITY RISK
-
 ## Code Conventions
 
-- TypeScript strict mode preferred
-- Functional components with hooks (no class components)
 - Accessibility-first: semantic HTML, ARIA when needed, keyboard navigation
 - Test with React Testing Library and Vitest — test behavior, not implementation
 - TailwindCSS for styling
-- Keep components small and composable
-- Learning context (exploring, understanding): guidance and trade-offs
-- Building context (creating, implementing): complete implementations
-- Infer from request language — "how does X work" vs "build X"
-- Production-ready standards and accessibility compliance when providing implementations
+- Learning context (exploring, understanding): guidance and trade-offs. Building context (creating, implementing): complete implementations. Infer from request language — "how does X work" vs "build X"
 - **Swift/SwiftUI/iOS:** Consult the `swift-dev` skill for conventions, patterns, and specialist skill routing. Do not generate Swift code without checking it first.
 
 ## Orchestration Patterns
@@ -55,12 +29,6 @@ Don't spend tokens on:
 - String concatenation of multi-file results (script aggregates)
 - Deciding which file to read next in a known sequence (script iterates)
 
-Do spend tokens on:
-- Interpreting results that require judgment
-- Making architectural or design decisions
-- Generating creative output (writing, code design, user-facing content)
-- Debugging when the script's assertions fail
-
 ### MCP Tool Batching
 
 When chaining MCP operations (multiple Shortcuts, multiple Filesystem reads), prefer generating a coordination script over sequential tool calls when the sequence is predictable. If the MCP server supports batch operations, use them.
@@ -82,68 +50,19 @@ Apply to ALL written output — code comments, docs, commit messages, PR descrip
 
 **Voice:** Direct, conversational, honest. Technical precision without jargon. Specific examples over abstract claims.
 
-**Prohibited terms — replace immediately:**
-- "crafting" → building, creating
-- "drove/championed" → led, implemented
-- "elegant/performant" → clean, efficient
-- "passionate/innovative" → show through examples
-- "leverage/seamless/robust" → use, apply, works well
-
-**Content criteria:** Include 2 of 3: actionable (specific tools/methods), evidence-based (results or metrics), problem-solving (real challenges with tested solutions).
-
-**Alerts:** Flag if prohibited terms used, voice inconsistency detected, or claims lack evidence.
-
-## SF Symbols
-
-- Do not use "sparkles" SF Symbol or any sparkle-style icon - overused for AI features
+Avoid corporate filler: "leverage", "seamless", "robust", "elegant", "crafting" — use plain alternatives.
 
 ## File Conventions
 
-- When creating scratch files, notes, or tracking artifacts in a repo, prefer `*.local` or `*.local.*` extensions (e.g., `notes.local`, `plan.local.md`) — these are gitignored across projects
-- This does not replace built-in task tracking — use whichever fits the situation
-- Script outputs: structured JSON to `{state-dir}/script-output.json`, not stdout parsing
-- State directories use `.local` suffix (`.iter.local/`, `.code-audit.local/`)
-
-## Skill Design
-
-### Description Conventions
-
-- Descriptions focus on triggering conditions ("Use when..."), not workflow summaries
-- Workflow summaries cause Claude to shortcut the description instead of reading the full SKILL.md body
-- Good: "Use when users want to create a new skill or update an existing skill that extends Claude's capabilities"
-- Bad: "A comprehensive workflow for skill creation including template scaffolding, testing, and deployment"
-
-### Skill Types
-
-- **Discipline** — enforces a practice (TDD, code audit). Test with pressure scenarios that tempt shortcuts.
-- **Technique** — teaches a method (sharpen, prompt-dev). Test with application scenarios across domains.
-- **Pattern** — provides reusable structure (iter, chat-migration). Test with recognition scenarios at boundaries.
-- **Reference** — supplies knowledge (axiom-*, swift-conventions). Test with retrieval scenarios for accuracy.
-
-### Context Discipline
-
-- The context window is a shared resource — only add what Claude doesn't already know
-- Match degrees of freedom to task fragility:
-  - **High** (prose/text) — creative or judgment-heavy tasks
-  - **Medium** (pseudocode) — structured but adaptable tasks
-  - **Low** (scripts) — brittle or deterministic tasks
-
-## Agent Teams
-
-- Terminal multiplexer is Zellij, not tmux — use `in-process` teammate mode until Zellij is supported as a split-pane backend
-- When Zellij split-pane support is available, prefer `"teammateMode": "zellij"` (or equivalent)
-- After spawning a team, press **Shift+Tab** to enable delegate mode — restricts the lead to coordination-only (spawn, message, task management) and prevents it from implementing directly
+- Scratch files use `*.local` or `*.local.*` extensions (e.g., `notes.local`, `plan.local.md`) — gitignored across projects
+- Skill state lives under `.workflow.local/{skill}/` (e.g., `.workflow.local/writing/`, `.workflow.local/code-audit/`) — the `*.local` gitignore pattern keeps it untracked
 
 ## Playwright CLI
 
-- Always use `--browser=chromium` when opening browser sessions
-- Do NOT use terminal image tools (`chafa`, `viu`, etc.) inside CC — they freeze or dump escape codes since the TUI can't pass through image protocols
-- After screenshots or image generation, open a floating Zellij pane with `viu`: `zellij run --floating -- viu <file>`
+- Do NOT run image tools (`chafa`, `viu`, etc.) directly — they freeze the TUI. Instead open a Zellij floating pane: `zellij run --floating -- viu <file>`
 
 ## Constraints
 
-- Only take actions when confident of the outcome
-- Alert on unverified claims or fabricated information
 - Never alter quoted scripture — maintain source integrity
 - Prefer automation over manual repetition — if performing the same operation 3+ times, write a script
-- When running multiple bash commands in sequence where each output feeds the next, combine into a single script with error handling rather than separate calls
+- Skill descriptions must be trigger conditions ("Use when..."), not workflow summaries — summaries cause Claude to shortcut the description instead of reading the full skill body

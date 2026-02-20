@@ -130,68 +130,6 @@ check_lm_studio() {
     fi
 }
 
-# Download latest release asset from GitHub
-# Usage: download_release_asset "owner/repo" "*.skill" "/output/dir"
-download_release_asset() {
-    local repo="$1"
-    local pattern="$2"
-    local output_dir="$3"
-
-    # Get latest release assets via GitHub API
-    local api_url="https://api.github.com/repos/$repo/releases/latest"
-    local release_json=$(curl -sf "$api_url" 2>/dev/null) || return 1
-
-    # Find asset matching pattern (convert glob to regex)
-    local regex_pattern=$(echo "$pattern" | sed 's/\*/.*/g')
-    local asset_url=$(echo "$release_json" | grep -o '"browser_download_url": *"[^"]*"' | \
-        grep -E "$regex_pattern" | head -1 | sed 's/.*"browser_download_url": *"\([^"]*\)".*/\1/')
-
-    [[ -z "$asset_url" ]] && return 1
-
-    local filename=$(basename "$asset_url")
-    curl -sfL "$asset_url" -o "$output_dir/$filename" 2>/dev/null || return 1
-    echo "$output_dir/$filename"
-}
-
-# Fetch skills from GitHub releases
-fetch_skills() {
-    info "Fetching skills from GitHub releases..."
-
-    # Format: "owner/repo" or "name=owner/repo" when directory name differs from repo
-    local skills=(
-        "foxtrottwist/dotfiles-skill"
-        "foxtrottwist/submodule-sync"
-    )
-
-    local tmp_dir=$(mktemp -d)
-    local skills_dir="$HOME/.claude/skills"
-    mkdir -p "$skills_dir"
-
-    for entry in "${skills[@]}"; do
-        local repo skill_name
-        if [[ "$entry" == *"="* ]]; then
-            skill_name="${entry%%=*}"
-            repo="${entry#*=}"
-        else
-            repo="$entry"
-            skill_name=$(basename "$repo" | tr '[:upper:]' '[:lower:]')
-        fi
-        local skill_file=$(download_release_asset "$repo" "*.skill" "$tmp_dir")
-        if [[ -f "$skill_file" ]]; then
-            # Remove existing skill directory to avoid stow conflicts
-            rm -rf "${skills_dir:?}/$skill_name" 2>/dev/null || true
-            mkdir -p "$skills_dir/$skill_name"
-            unzip -o -q "$skill_file" -d "$skills_dir/$skill_name"
-            rm -f "$skill_file"
-            success "Fetched skill: $skill_name"
-        else
-            warn "No release found: $skill_name - using embedded if available"
-        fi
-    done
-
-    rm -rf "$tmp_dir"
-}
-
 # Clean up files that interfere with stow
 cleanup() {
     info "Cleaning up..."
@@ -281,7 +219,6 @@ main() {
     check_lm_studio
     cleanup
     deploy_dotfiles
-    fetch_skills
 
     echo ""
     info "Running verification..."
@@ -306,11 +243,10 @@ case "${1:-}" in
         echo ""
         echo "Options:"
         echo "  --help, -h     Show this help message"
-        echo "  --update       Pull latest, restow, and fetch skills"
+        echo "  --update       Pull latest and restow"
         echo "  --cleanup      Remove .DS_Store and other interfering files"
         echo "  --verify       Only run verification checks"
         echo "  --stow-only    Only deploy dotfiles (skip package installation)"
-        echo "  --fetch-only   Only fetch skills from GitHub releases"
         echo ""
         ;;
     --update)
@@ -322,7 +258,6 @@ case "${1:-}" in
         activate_mise
         install_npm_packages
         deploy_dotfiles
-        fetch_skills
         success "Update complete!"
         ;;
     --cleanup)
@@ -334,9 +269,6 @@ case "${1:-}" in
     --stow-only)
         deploy_dotfiles
         verify_installation
-        ;;
-    --fetch-only)
-        fetch_skills
         ;;
     *)
         main

@@ -190,3 +190,6 @@ fi
 export PATH="$PATH:/Users/lawhorne/.lmstudio/bin"
 # End of LM Studio CLI section
 
+# Machine-local overrides (not tracked in dotfiles)
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
