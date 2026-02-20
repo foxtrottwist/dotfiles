@@ -20,7 +20,8 @@
     "hookify@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "workflow-tools@workflow-tools": true,
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "cowork-plugin-management@knowledge-work-plugins": true
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754319512707
