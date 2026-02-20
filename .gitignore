@@ -1,6 +1,9 @@
 # Claude Code local settings (root only)
 /.claude/
 
+# Override global gitignore for stow packages that manage .claude/
+!claude/.claude/
+
 # Build artifacts
 *.skill
 
