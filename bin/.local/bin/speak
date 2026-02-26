@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# speak - Send text to SpokenBite TTS via REST API
+# Usage:
+#   speak "Build passed"
+#   speak Build passed, 3 errors in AudioCaptureService
+#   echo "long text" | speak
+
+PORT="${SPOKENBITE_PORT:-7849}"
+
+if [[ -n "$*" ]]; then
+    TEXT="$*"
+else
+    TEXT=$(cat)
+fi
+
+if command -v jq &>/dev/null; then
+    BODY=$(jq -n --arg input "$TEXT" '{"input": $input}')
+else
+    BODY="{\"input\": \"$(printf '%s' "$TEXT" | sed 's/\\/\\\\/g; s/"/\\"/g')\"}"
+fi
+
+curl -s -X POST "http://localhost:${PORT}/v1/audio/speech" \
+    -H "Content-Type: application/json" \
+    -d "$BODY"
