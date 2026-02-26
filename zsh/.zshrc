@@ -128,6 +128,23 @@ CDPATH=".:$HOME:$HOME/Repos"
 alias vi='nvim'
 
 # ============================================================
+# Functions
+# ============================================================
+
+# Stream macOS unified logs by subsystem and optional category
+# Usage:
+#   logstream app.trulynotable.SpokenBite
+#   logstream app.trulynotable.SpokenBite communicate
+#   logstream app.trulynotable.SpokenBite tts | tee logs.local
+logstream() {
+    local predicate="subsystem == \"$1\""
+    if [[ -n "$2" ]]; then
+        predicate+=" AND category == \"$2\""
+    fi
+    log stream --info --predicate "$predicate" --style compact
+}
+
+# ============================================================
 # Tool Initialization (with existence checks)
 # ============================================================
 
