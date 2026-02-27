@@ -1,5 +1,9 @@
 # CLAUDE.md — Global
 
+## Response Style
+
+- Concise by default. Don't pad responses with preamble or postamble.
+
 ## Code Conventions
 
 - Accessibility-first: semantic HTML, ARIA when needed, keyboard navigation
@@ -22,6 +26,8 @@ Don't spend tokens on:
 - Interpreting exit codes (script handles pass/fail logic)
 - String concatenation of multi-file results (script aggregates)
 - Deciding which file to read next in a known sequence (script iterates)
+
+Don't script tasks where intermediate results change the approach.
 
 ## Verification
 
@@ -57,4 +63,3 @@ Prefer: "This uses Express to handle routing."
 ## Constraints
 
 - Never alter quoted scripture — maintain source integrity
-- Prefer automation over manual repetition — if performing the same operation 3+ times, write a script
