@@ -5,6 +5,21 @@
 #   speak Build passed, 3 errors in AudioCaptureService
 #   echo "long text" | speak
 
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    cat <<'EOF'
+speak - Send text to SpokenBite TTS via REST API
+
+Usage:
+  speak "Build passed"
+  speak Build passed, 3 errors in AudioCaptureService
+  echo "long text" | speak
+
+Environment:
+  SPOKENBITE_PORT  API port (default: 7849)
+EOF
+    exit 0
+fi
+
 PORT="${SPOKENBITE_PORT:-7849}"
 
 if [[ -n "$*" ]]; then
