@@ -57,3 +57,4 @@ cd ~/dotfiles && stow -R <package>
 - Optional tools (Miniconda, LM Studio CLI, Rover) are conditionally loaded via existence checks in `.zshrc`/`.zshenv`
 - Neovim uses lazy.nvim with plugins organized under `nvim/.config/nvim/lua/foxtrottwist/plugins/`
 - `.gitignore` excludes `*.skill`, `*.local`, `*.local.*`, `.claude/` (repo-local settings), `.code-audit/`, and `.writing/`
+- `bin/.local/bin/` is tracked despite matching the `*.local` gitignore pattern — use `git add -f` when staging changes to files in that directory
