@@ -29,6 +29,12 @@ Don't spend tokens on:
 
 Don't script tasks where intermediate results change the approach.
 
+### Context Preservation
+
+When a task involves 3+ files or 2+ distinct operations, prefer dispatching subagents via the Task tool over doing work inline. Keep the primary context for planning, reviewing results, and making decisions — not for implementation.
+
+Exceptions: single-file edits, quick lookups, and tasks where intermediate results change the approach.
+
 ## Verification
 
 - After changes, run the project's test/lint/build commands and confirm they pass before reporting completion.
