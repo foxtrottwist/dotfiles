@@ -1,9 +1,15 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git add * && git commit *)"
+    ]
+  },
   "env": {
     "ENABLE_TOOL_SEARCH": "true",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -58,7 +64,6 @@
     "claude-code-setup@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
-    "hookify@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "workflow-tools@workflow-tools": true,
     "skill-creator@claude-plugins-official": true,
@@ -66,6 +71,5 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754319512707
-  },
-  "model": "opus[1m]"
+  }
 }
