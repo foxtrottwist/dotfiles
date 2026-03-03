@@ -4,12 +4,13 @@
 
 COMMAND=$(cat | jq -r '.tool_input.command')
 
-# Match actual curl invocations with API paths, not incidental mentions
-if echo "$COMMAND" | grep -qE 'curl\s.*localhost:7849/'; then
+# Allow /v1/status for post-build health checks, block everything else
+if echo "$COMMAND" | grep -qE 'curl\s.*localhost:7849/' && \
+   ! echo "$COMMAND" | grep -qE 'localhost:7849/v1/status'; then
   cat <<'EOF'
 {
   "decision": "block",
-  "reason": "Use `speak \"message\"` CLI for TTS instead of curling the SpokenBite API. For status checks, use the post-build workflow (Cmd+R → sleep → curl status) only when verifying the app is live after a build."
+  "reason": "Use `speak \"message\"` CLI for TTS instead of curling the SpokenBite API. Status checks via /v1/status are allowed."
 }
 EOF
 fi
