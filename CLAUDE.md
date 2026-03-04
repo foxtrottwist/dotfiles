@@ -34,7 +34,7 @@ cd ~/dotfiles && stow -R <package>
 ## Architecture
 
 **Stow packages** — each directory maps to `$HOME`:
-- `claude/` — `.claude/settings.json` and `.claude/CLAUDE.md` (global Claude Code config)
+- `claude/` — `.claude/settings.json`, `.claude/CLAUDE.md`, and `.claude/starship.toml` (global Claude Code config + statusline theme)
 - `git/` — `.config/git/config` and `.config/git/ignore` (global git config + gitignore via XDG path; `config.local` for per-machine user settings)
 - `ghostty/` — `.config/ghostty/`
 - `mise/` — `.config/mise/config.toml`
