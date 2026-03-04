@@ -10,7 +10,6 @@
       "Bash(speak *)"
     ]
   },
-  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -54,8 +53,8 @@
   },
   "statusLine": {
     "type": "command",
-    "padding": 0,
-    "command": "~/.local/bin/starship-claude"
+    "command": "~/.local/bin/starship-claude",
+    "padding": 0
   },
   "enabledPlugins": {
     "swift-lsp@claude-plugins-official": true,
