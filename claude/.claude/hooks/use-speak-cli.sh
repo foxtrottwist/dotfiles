@@ -2,7 +2,13 @@
 # use-speak-cli.sh — PreToolUse hook (matcher: Bash)
 # Catches curl commands to SpokenBite's localhost API and reminds to use `speak` CLI.
 
-COMMAND=$(cat | jq -r '.tool_input.command')
+INPUT=$(cat) || exit 0
+
+# Skip in subagents
+AGENT_ID=$(echo "$INPUT" | jq -r '.agent_id // empty')
+[[ -n "$AGENT_ID" ]] && exit 0
+
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command')
 
 # Allow /v1/status for post-build health checks, block everything else
 if echo "$COMMAND" | grep -qE 'curl\s.*localhost:7849/' && \

@@ -2,7 +2,12 @@
 # precompact-state-check.sh — PreCompact hook
 # Before context compression, surface uncommitted state so it isn't lost.
 
-INPUT=$(cat)
+INPUT=$(cat) || exit 0
+
+# Skip in subagents
+AGENT_ID=$(echo "$INPUT" | jq -r '.agent_id // empty')
+[[ -n "$AGENT_ID" ]] && exit 0
+
 CWD=$(echo "$INPUT" | jq -r '.cwd')
 
 cd "$CWD" || exit 0

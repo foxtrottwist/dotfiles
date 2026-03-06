@@ -3,6 +3,12 @@
 # Fires when a coding session begins after plan approval or /clear.
 # Reminds about subagent delegation, skill usage, and context hygiene.
 
+INPUT=$(cat) || exit 0
+
+# Skip in subagents
+AGENT_ID=$(echo "$INPUT" | jq -r '.agent_id // empty')
+[[ -n "$AGENT_ID" ]] && exit 0
+
 cat <<'EOF'
 {
   "hookSpecificOutput": {

@@ -11,16 +11,6 @@
     ]
   },
   "hooks": {
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/swift-skill-nudge.sh"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -28,27 +18,6 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/use-speak-cli.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-print-nslog.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/warn-logger-nonisolated.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/swift-patterns.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/claude-md-bloat-guard.sh"
           }
         ]
       }
@@ -74,16 +43,6 @@
         ]
       }
     ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/verification-nudge.sh"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write|Bash",
@@ -91,6 +50,26 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/commit-reminder.sh"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/permission-router.sh"
+          }
+        ]
+      }
+    ],
+    "InstructionsLoaded": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/instructions-validator.sh"
           }
         ]
       }
