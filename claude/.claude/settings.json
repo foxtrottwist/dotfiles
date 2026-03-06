@@ -11,6 +11,16 @@
     ]
   },
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/swift-skill-nudge.sh"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -35,6 +45,20 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/swift-patterns.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/claude-md-bloat-guard.sh"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/precompact-state-check.sh"
           }
         ]
       }
