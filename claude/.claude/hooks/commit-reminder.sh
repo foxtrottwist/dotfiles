@@ -3,6 +3,11 @@
 # Warns when uncommitted file count exceeds threshold.
 
 INPUT=$(cat)
+
+# Skip in subagents
+AGENT_ID=$(echo "$INPUT" | jq -r '.agent_id // empty')
+[[ -n "$AGENT_ID" ]] && exit 0
+
 CWD=$(echo "$INPUT" | jq -r '.cwd')
 
 cd "$CWD" || exit 0
