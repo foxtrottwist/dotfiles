@@ -18,11 +18,5 @@ MODIFIED=$(git status --porcelain | wc -l | tr -d ' ')
 
 SUMMARY=$(git status --porcelain | head -10)
 
-cat <<EOF
-{
-  "hookSpecificOutput": {
-    "hookEventName": "PreCompact",
-    "additionalContext": "Pre-compaction state: $MODIFIED uncommitted file(s) exist. Before context is compressed, note any in-progress work so it can be resumed after compaction.\n$SUMMARY"
-  }
-}
-EOF
+echo "Pre-compaction state: $MODIFIED uncommitted file(s) exist. Before context is compressed, note any in-progress work so it can be resumed after compaction."
+echo "$SUMMARY"

@@ -184,26 +184,19 @@ fi
 [[ -f ~/.env.claude ]] && source ~/.env.claude
 
 # ============================================================
-# Zellij - Terminal Multiplexer
+# Zellij - Terminal Multiplexer (disabled — using Ghostty native tabs/splits)
 # ============================================================
-# Polyfill GHOSTTY_QUICK_TERMINAL for Ghostty <1.3.0 (native support ships in 1.3.0)
-if [[ "$TERM_PROGRAM" == "ghostty" && -z "$GHOSTTY_QUICK_TERMINAL" && $LINES -le 25 ]]; then
-    export GHOSTTY_QUICK_TERMINAL=1
-fi
-
-# Auto-attach to "main" session if not already in Zellij
-# Skip in Ghostty quick terminal to avoid shared session resize issues
-if command -v zellij &>/dev/null; then
-    if [[ -z "$ZELLIJ" && -z "$ZELLIJ_SESSION_NAME" && -z "$GHOSTTY_QUICK_TERMINAL" ]]; then
-        zellij attach -c main
-    fi
-
-    # Reset zellij session - kills current session and starts fresh
-    zj-reset() {
-        zellij kill-session main 2>/dev/null
-        exec zsh
-    }
-fi
+# To re-enable: uncomment the auto-attach block below
+# if command -v zellij &>/dev/null; then
+#     if [[ -z "$ZELLIJ" && -z "$ZELLIJ_SESSION_NAME" && -z "$GHOSTTY_QUICK_TERMINAL" ]]; then
+#         zellij attach -c main
+#     fi
+#
+#     zj-reset() {
+#         zellij kill-session main 2>/dev/null
+#         exec zsh
+#     }
+# fi
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/lawhorne/.lmstudio/bin"
