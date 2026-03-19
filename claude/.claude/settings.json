@@ -41,6 +41,24 @@
             "command": "~/.claude/hooks/context-preservation-check.sh"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cws-session-start.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cws-session-stop.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
