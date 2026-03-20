@@ -6,72 +6,10 @@
   },
   "permissions": {
     "allow": [
-      "Bash(git add * && git commit *)",
-      "Bash(speak *)"
+      "Bash(git add * && git commit *)"
     ]
   },
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/use-speak-cli.sh"
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/precompact-state-check.sh"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "clear",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/context-preservation-check.sh"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/cws-session-start.sh"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/cws-session-stop.sh"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/commit-reminder.sh"
-          }
-        ]
-      }
-    ],
     "PermissionRequest": [
       {
         "hooks": [
@@ -82,12 +20,14 @@
         ]
       }
     ],
-    "InstructionsLoaded": [
+    "PostToolUse": [
       {
+        "matcher": "mcp__xcode__BuildProject|mcp__xcode__RunAllTests|mcp__xcode__RunSomeTests|mcp__plugin_workflow-tools_shortcuts__run_shortcut",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/instructions-validator.sh"
+            "command": "~/.claude/hooks/swizzle-reminder.sh",
+            "timeout": 5
           }
         ]
       }
