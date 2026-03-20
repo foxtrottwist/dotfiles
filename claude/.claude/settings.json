@@ -19,18 +19,6 @@
           }
         ]
       }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "mcp__xcode__BuildProject|mcp__xcode__RunAllTests|mcp__xcode__RunSomeTests|mcp__plugin_workflow-tools_shortcuts__run_shortcut",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/swizzle-reminder.sh",
-            "timeout": 5
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
