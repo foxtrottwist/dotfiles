@@ -9,6 +9,7 @@
       "Bash(git add * && git commit *)"
     ]
   },
+  "model": "opusplan",
   "hooks": {
     "PermissionRequest": [
       {
@@ -39,7 +40,8 @@
     "workflow-tools@workflow-tools": true,
     "skill-creator@claude-plugins-official": true,
     "cowork-plugin-management@knowledge-work-plugins": true,
-    "starship-claude@starship-claude": true
+    "starship-claude@starship-claude": true,
+    "playwright@claude-plugins-official": true
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754319512707
