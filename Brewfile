@@ -11,6 +11,7 @@ brew "mise"           # Runtime version manager
 brew "zsh"            # Shell
 brew "starship"       # Cross-shell prompt
 brew "viu"            # Terminal image viewer
+brew "asc"            # App Store Connect CLI
 
 # macOS Applications (casks)
 cask "ghostty"        # Terminal emulator
