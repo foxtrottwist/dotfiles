@@ -40,7 +40,8 @@
     "skill-creator@claude-plugins-official": true,
     "cowork-plugin-management@knowledge-work-plugins": true,
     "starship-claude@starship-claude": true,
-    "playwright@claude-plugins-official": true
+    "playwright@claude-plugins-official": true,
+    "swift-skills@swift-skills": true
   },
   "extraKnownMarketplaces": {
     "understand-anything": {
@@ -48,6 +49,13 @@
         "source": "github",
         "repo": "Lum1104/Understand-Anything"
       }
+    },
+    "swift-skills": {
+      "source": {
+        "source": "github",
+        "repo": "foxtrottwist/swift-skills"
+      },
+      "autoUpdate": true
     }
   },
   "feedbackSurveyState": {

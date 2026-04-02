@@ -126,17 +126,15 @@ stow -D [package]  # Removes symlinks
 
 ## Skills
 
-Most skills (iter, write, prompt-dev, chat-migration, code-audit) and the shortcuts-mcp server are bundled in the `workflow-tools` Claude Code plugin. The setup script fetches the two standalone skills from GitHub releases:
+Standalone skills are fetched by the setup script from GitHub releases:
 
 - **dotfiles-skill** — Manages this dotfiles repo from Claude Code
 - **submodule-sync** — Git submodule workflow automation
 
 Downloaded as `.skill` files and unpacked to `~/.claude/skills/`.
 
-To update standalone skills to latest releases:
-
 ```bash
-./setup.sh --fetch-only
+./setup.sh --fetch-only  # Update standalone skills to latest
 ```
 
 ## Git Package
