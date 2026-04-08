@@ -4,6 +4,9 @@
 # Ensure TERM is set (fallback for Zellij session re-attach/resurrection)
 export TERM="${TERM:-xterm-256color}"
 
+# Claude Code
+export CLAUDE_CODE_NO_FLICKER=1
+
 # Rover - Apollo GraphQL CLI (optional)
 [[ -f "$HOME/.rover/env" ]] && source "$HOME/.rover/env"
 
